@@ -1,0 +1,513 @@
+<title>RAG อ่านภาษาไทยออก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; flow diagrams and the results chart break out wider. Clinical-ink palette:
+   green-biased paper, deep ink, amber marks a problem, teal marks a fix. */
+:root {
+  --paper: #f3f5f2;
+  --surface: #ffffff;
+  --ink: #17221f;
+  --muted: #5a6763;
+  --line: #d4dbd7;
+  --teal: #0f766e;
+  --teal-soft: #dcefeb;
+  --amber: #b45309;
+  --amber-soft: #fbecd9;
+  --old: #8a9792;
+  --ingest: #ece6f3;
+  --answer: #e2f0e6;
+  --f-display: "Noto Serif Thai", Georgia, serif;
+  --f-body: "IBM Plex Sans Thai", "Leelawadee UI", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111816; --surface: #18211f; --ink: #e4ebe8; --muted: #9aa8a3; --line: #2c3935;
+    --teal: #4fc1b3; --teal-soft: #173430; --amber: #f0a352; --amber-soft: #3a2a17; --old: #6f7d78; --ingest: #231f2b; --answer: #18261e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111816; --surface: #18211f; --ink: #e4ebe8; --muted: #9aa8a3; --line: #2c3935;
+  --teal: #4fc1b3; --teal-soft: #173430; --amber: #f0a352; --amber-soft: #3a2a17; --old: #6f7d78; --ingest: #231f2b; --answer: #18261e;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font: 400 1rem/1.65 var(--f-body);
+  padding-inline: 16px; padding-block: 40px 72px;
+}
+.page { max-width: 880px; margin-inline: auto; display: grid; gap: 56px; }
+.prose { max-width: 66ch; }
+h1, h2 { font-family: var(--f-display); text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); }
+h2 { font-size: clamp(1.35rem, 3.4vw, 1.7rem); }
+h3 { font-size: 1.05rem; margin: 0; }
+p { margin: 0; }
+.stack { display: grid; gap: 14px; }
+.eyebrow { font: 500 .78rem/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.12rem; color: var(--muted); }
+code, .mono { font-family: var(--f-mono); font-size: .9em; }
+.th { font-family: var(--f-body); }
+
+/* ---------- flow diagram ---------- */
+.flow { overflow-x: auto; padding-bottom: 4px; }
+.flow-inner { min-width: 640px; display: grid; gap: 10px; }
+.row { display: grid; gap: 10px; align-items: stretch; }
+.row.two { grid-template-columns: 1fr 1fr; }
+.node {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+  padding: 10px 14px; display: grid; gap: 2px;
+}
+.node b { font-weight: 600; }
+.node small { color: var(--muted); font-size: .84rem; line-height: 1.45; }
+.node.bad { border-color: var(--amber); background: var(--amber-soft); }
+.node.good { border-color: var(--teal); background: var(--teal-soft); }
+.node.llm { border-style: dashed; }
+.arrow { text-align: center; color: var(--muted); font: 500 .8rem/1 var(--f-mono); }
+.arrow::before { content: "↓"; display: block; font-size: 1.1rem; line-height: 1.2; }
+.tag { font: 500 .7rem/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; }
+.tag.bad { color: var(--amber); }
+.tag.good { color: var(--teal); }
+
+/* ---------- token demo ---------- */
+.tokens { display: grid; gap: 10px; }
+.tok-row { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; align-items: center; }
+.tok-row .label { font: 500 .85rem var(--f-mono); color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--f-body); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); }
+.chip.bad { border-color: var(--amber); background: var(--amber-soft); }
+.chip.good { border-color: var(--teal); background: var(--teal-soft); }
+.note { border-left: 3px solid var(--line); padding-left: 14px; color: var(--muted); }
+
+/* ---------- window demo ---------- */
+.chunkbar { display: grid; gap: 8px; }
+.bar { position: relative; height: 34px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+.bar .seen { position: absolute; inset: 0 auto 0 0; background: var(--teal-soft); border-right: 2px solid var(--teal); }
+.bar .answer { position: absolute; top: 5px; bottom: 5px; width: 10px; border-radius: 2px; background: var(--amber); }
+.bar .win { position: absolute; top: 0; bottom: 0; border-right: 1px dashed var(--teal); }
+.bar-cap { font-size: .86rem; color: var(--muted); }
+
+/* ---------- results ---------- */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button {
+  font: 500 .88rem var(--f-body); color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+}
+.tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tabs button:focus-visible, .metric-pick select:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.chart { display: grid; gap: 12px; }
+.c-row { display: grid; grid-template-columns: minmax(0, 15rem) 1fr 3.4rem; gap: 12px; align-items: center; }
+.c-name { font-size: .9rem; line-height: 1.35; }
+.c-name small { display: block; color: var(--muted); font-size: .78rem; }
+.c-track { height: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; position: relative; }
+.c-fill { position: absolute; inset: 0 auto 0 0; border-radius: 2px; background: var(--old); transition: width .4s ease; }
+.c-row.final .c-fill { background: var(--teal); }
+.c-val { font: 500 .92rem var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.legend { font-size: .85rem; color: var(--muted); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .9rem; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+th { font-weight: 600; color: var(--muted); font-size: .8rem; }
+tr.final td { font-weight: 600; }
+
+/* ---------- talking points ---------- */
+.points { counter-reset: p; display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.points li { counter-increment: p; display: grid; grid-template-columns: 2rem 1fr; gap: 8px; }
+.points li::before { content: counter(p); font: 600 1rem var(--f-mono); color: var(--teal); }
+.terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; }
+.term b { font-family: var(--f-mono); font-size: .9rem; }
+.term span { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+
+/* ---------- slide-style diagram (matches course slide p.20) ---------- */
+.slide-wrap { overflow-x: auto; border-radius: 8px; }
+.slide { display: block; width: 100%; min-width: 820px; height: auto; font-family: var(--f-body); }
+.p-ingest { fill: var(--ingest); }
+.p-answer { fill: var(--answer); }
+.t-panel { font-size: 15px; font-weight: 600; fill: var(--ink); }
+.t-b { font-size: 13px; font-weight: 600; fill: var(--ink); }
+.t-s { font-size: 11px; fill: var(--muted); }
+.t-bad { fill: var(--amber); font-weight: 600; }
+.t-good { fill: var(--teal); font-weight: 600; }
+.n rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.n.llm rect { stroke-dasharray: 5 3; stroke: var(--muted); }
+.n.user rect { stroke: var(--muted); }
+.n.bad rect { fill: var(--amber-soft); stroke: var(--amber); stroke-width: 1.6; }
+.n.good rect { fill: var(--teal-soft); stroke: var(--teal); stroke-width: 1.8; }
+.e { fill: none; stroke: var(--muted); stroke-width: 1.3; }
+.e.dash { stroke-dasharray: 4 3; }
+.ah { fill: var(--muted); }
+.badge circle { fill: var(--teal); }
+.badge text, .badge-bad text { font: 700 13px var(--f-mono); fill: var(--paper); }
+.badge-bad circle { fill: var(--amber); }
+.slide.mode-before .after-only, .slide.mode-after .before-only { display: none; }
+
+@media (max-width: 560px) {
+  .tok-row { grid-template-columns: 1fr; gap: 4px; }
+  .c-row { grid-template-columns: 1fr 3.2rem; }
+  .c-name { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) { .c-fill { transition: none; } }
+</style>
+<style>
+/* additions for the Thai version */
+.c-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .85rem; color: var(--muted); }
+.example { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; }
+.example table { min-width: 520px; }
+.example td.hl, .example th.hl { background: var(--amber-soft); }
+.example td:nth-child(2), .example th:nth-child(2) { text-align: left; }
+.limits { display: grid; gap: 10px; margin: 0; padding-left: 1.2em; }
+</style>
+
+<main class="page">
+
+  <header class="stack prose">
+    <span class="eyebrow">KDAI-NLP assignment · Authentic RAG</span>
+    <h1>ทำให้ RAG อ่านภาษาไทยออกจริง ๆ</h1>
+    <p class="lede">ระบบ RAG ของวิชาค้นคำตอบจากบทความสุขภาพภาษาไทย 4 เรื่อง (หัดเยอรมัน อหิวาตกโรค ต้อกระจก กรดไหลย้อน) ระบบใช้งานได้ แต่ครึ่งหนึ่งของการค้นหาพังเงียบ ๆ เมื่อเจอภาษาไทย หน้านี้อธิบายว่าระบบทำงานยังไง ผิดตรงไหน แก้อะไร 2 อย่าง และวัดผลออกมาได้เท่าไร</p>
+    <p class="note prose">สรุป: คำถามเจาะลึก 20 ข้อ chunk ที่ถูกขึ้นเป็นอันดับ 1 จาก <b>75% → 100%</b> และ Recall@1 จาก <b>0.688 → 0.912</b> ส่วนการค้นด้วยคำ (BM25) จากที่หาไม่เจอเลย 35 จาก 44 ข้อ กลายเป็นใช้ได้ทั้ง 44 ข้อ ราคาที่ต้องจ่ายคือเวลา ประมาณ 14 วินาทีต่อคำถาม จากเดิม 0.2 วินาที (รันบน CPU ของ laptop)</p>
+  </header>
+
+  <!-- ===== 1. what RAG does ===== -->
+  <section class="stack">
+    <span class="eyebrow">ขั้นที่ 1 จาก 4 · ระบบเดิมทำงานยังไง</span>
+    <h2>ระบบเดิม (โจทย์ข้อ 1)</h2>
+    <p class="prose">RAG คือการ<b>ค้นเอกสารของเราเองก่อน</b> แล้วส่งท่อนที่เกี่ยวข้องที่สุดให้ AI อ่าน AI จึงตอบจากเอกสารจริง ไม่ได้ตอบจากความจำ การค้นหามี 2 ทางที่ทำงานคู่กัน คือค้นด้วยคำ (BM25) กับค้นด้วยความหมาย (vector)</p>
+
+    <div class="tabs" role="group" aria-label="เลือกแผนภาพ">
+      <button type="button" id="d-before" aria-pressed="true">ก่อน · ตามสไลด์</button>
+      <button type="button" id="d-after" aria-pressed="false">หลัง · ที่เราแก้</button>
+    </div>
+    <div class="slide-wrap">
+      <svg id="slide" class="slide mode-before" viewBox="0 0 1000 450" role="img"
+           aria-label="แผนภาพ Authentic RAG ฝั่งซ้ายคือการนำเข้า: ไฟล์ markdown 4 ไฟล์ถูกตัดเป็น 53 chunks, Qwen เขียน context ให้แต่ละ chunk, context กับ chunk ถูกแปลงเป็น vector ด้วย bge-m3 เก็บในตู้ vector และตู้ BM25 ฝั่งขวาคือการค้นหา: คำถามค้นทั้งสองตู้, RRF รวมอันดับ แล้ว LLM เขียนคำตอบ แผนภาพแบบหลังเปลี่ยนตู้ BM25 เป็นตัวตัดคำ thai และเพิ่ม reranker bge-reranker-v2-m3 ที่อ่านเป็นหน้าต่าง 500 ตัวอักษร ระหว่าง RRF กับ LLM">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="ah"/>
+          </marker>
+        </defs>
+
+        <!-- panels -->
+        <rect x="10" y="10" width="470" height="430" rx="8" class="p-ingest"/>
+        <rect x="490" y="10" width="500" height="430" rx="8" class="p-answer"/>
+        <text x="245" y="38" class="t-panel" text-anchor="middle">นำเข้า · chunk พร้อม context</text>
+        <text x="740" y="38" class="t-panel" text-anchor="middle">ค้นหา · หา chunk ที่ตอบคำถามได้จริง</text>
+
+        <!-- ingestion nodes -->
+        <g class="n"><rect x="30" y="95" width="85" height="75" rx="5"/>
+          <text x="72" y="128" text-anchor="middle" class="t-b">ไฟล์ .md × 4</text>
+          <text x="72" y="146" text-anchor="middle" class="t-s">MedThai</text></g>
+        <g class="n"><rect x="140" y="95" width="90" height="75" rx="5"/>
+          <text x="185" y="128" text-anchor="middle" class="t-b">53 chunks</text>
+          <text x="185" y="146" text-anchor="middle" class="t-s">ตัดตามหัวข้อ</text></g>
+        <g class="n llm"><rect x="255" y="95" width="135" height="75" rx="5"/>
+          <text x="322" y="122" text-anchor="middle" class="t-b">Qwen (LLM)</text>
+          <text x="322" y="140" text-anchor="middle" class="t-s">เขียน context สั้น ๆ</text>
+          <text x="322" y="155" text-anchor="middle" class="t-s">ให้ทุก chunk</text></g>
+        <g class="n"><rect x="140" y="205" width="250" height="45" rx="5"/>
+          <text x="265" y="233" text-anchor="middle" class="t-b">Context + Chunk  × 53</text></g>
+        <g class="n"><rect x="170" y="290" width="110" height="55" rx="5"/>
+          <text x="225" y="314" text-anchor="middle" class="t-b">Embedding</text>
+          <text x="225" y="331" text-anchor="middle" class="t-s">bge-m3 · 1024 มิติ</text></g>
+        <g class="n"><rect x="305" y="285" width="160" height="50" rx="5"/>
+          <text x="385" y="306" text-anchor="middle" class="t-b">ตู้ Vector</text>
+          <text x="385" y="323" text-anchor="middle" class="t-s">OpenSearch k-NN</text></g>
+        <g class="n before-only bad"><rect x="305" y="360" width="160" height="60" rx="5"/>
+          <text x="385" y="382" text-anchor="middle" class="t-b">ตู้ BM25 (ดัชนีคำ)</text>
+          <text x="385" y="399" text-anchor="middle" class="t-s">ตัดคำแบบ standard</text>
+          <text x="385" y="413" text-anchor="middle" class="t-s t-bad">ประโยคไทย = 1 คำ</text></g>
+        <g class="n after-only good"><rect x="305" y="360" width="160" height="60" rx="5"/>
+          <text x="385" y="382" text-anchor="middle" class="t-b">ตู้ BM25 (ดัชนีคำ)</text>
+          <text x="385" y="399" text-anchor="middle" class="t-s t-good">ตัดคำแบบ thai</text>
+          <text x="385" y="413" text-anchor="middle" class="t-s">อาการ | หัดเยอรมัน</text></g>
+
+        <!-- ingestion arrows -->
+        <path d="M115,132 H138" class="e" marker-end="url(#ah)"/>
+        <path d="M230,132 H253" class="e" marker-end="url(#ah)"/>
+        <path d="M322,170 V203" class="e" marker-end="url(#ah)"/>
+        <path d="M185,170 V203" class="e" marker-end="url(#ah)"/>
+        <path d="M225,250 V288" class="e" marker-end="url(#ah)"/>
+        <path d="M280,315 H303" class="e" marker-end="url(#ah)"/>
+        <path d="M155,250 V390 H303" class="e" marker-end="url(#ah)"/>
+        <text x="160" y="384" class="t-s">ข้อความ</text>
+
+        <!-- retrieval nodes -->
+        <g class="n user"><rect x="895" y="70" width="80" height="50" rx="25"/>
+          <text x="935" y="100" text-anchor="middle" class="t-b">คำถาม</text></g>
+        <g class="n"><rect x="515" y="285" width="100" height="45" rx="5"/>
+          <text x="565" y="305" text-anchor="middle" class="t-b">ค้นความหมาย</text>
+          <text x="565" y="321" text-anchor="middle" class="t-s">10 อันดับ</text></g>
+        <g class="n before-only bad"><rect x="515" y="365" width="100" height="45" rx="5"/>
+          <text x="565" y="385" text-anchor="middle" class="t-b">ค้นคำ BM25</text>
+          <text x="565" y="401" text-anchor="middle" class="t-s t-bad">ไม่เจอเลย 35/44</text></g>
+        <g class="n after-only good"><rect x="515" y="365" width="100" height="45" rx="5"/>
+          <text x="565" y="385" text-anchor="middle" class="t-b">ค้นคำ BM25</text>
+          <text x="565" y="401" text-anchor="middle" class="t-s t-good">ใช้ได้ 44/44</text></g>
+        <g class="n"><rect x="640" y="315" width="85" height="60" rx="5"/>
+          <text x="682" y="340" text-anchor="middle" class="t-b">รวมอันดับ</text>
+          <text x="682" y="357" text-anchor="middle" class="t-s">RRF</text></g>
+        <g class="n after-only good"><rect x="748" y="290" width="122" height="110" rx="5"/>
+          <text x="809" y="315" text-anchor="middle" class="t-b">Reranker</text>
+          <text x="809" y="333" text-anchor="middle" class="t-s">bge-reranker-v2-m3</text>
+          <text x="809" y="351" text-anchor="middle" class="t-s">อ่านคำถาม + หน้าต่าง</text>
+          <text x="809" y="366" text-anchor="middle" class="t-s">ละ 500 ตัวอักษร</text>
+          <text x="809" y="384" text-anchor="middle" class="t-s t-good">หน้าต่างดีสุด = คะแนน</text></g>
+        <g class="n llm"><rect x="890" y="310" width="90" height="70" rx="5"/>
+          <text x="935" y="337" text-anchor="middle" class="t-b">LLM ตอบ</text>
+          <text x="935" y="353" text-anchor="middle" class="t-s">Qwen</text>
+          <text x="935" y="368" text-anchor="middle" class="t-s">ตัวเดิม</text></g>
+
+        <!-- retrieval arrows -->
+        <path d="M895,95 H500 V377 H513" class="e dash" marker-end="url(#ah)"/>
+        <path d="M500,297 H513" class="e dash" marker-end="url(#ah)"/>
+        <text x="700" y="88" text-anchor="middle" class="t-s">คำถามค้นทั้งสองทาง</text>
+        <path d="M465,318 H513" class="e" marker-end="url(#ah)"/>
+        <path d="M465,398 H513" class="e" marker-end="url(#ah)"/>
+        <path d="M615,307 H630 V335 H638" class="e" marker-end="url(#ah)"/>
+        <path d="M615,387 H630 V355 H638" class="e" marker-end="url(#ah)"/>
+        <g class="before-only">
+          <path d="M725,345 H888" class="e" marker-end="url(#ah)"/>
+          <text x="806" y="337" text-anchor="middle" class="t-s">5 อันดับ</text>
+        </g>
+        <g class="after-only">
+          <path d="M725,345 H746" class="e" marker-end="url(#ah)"/>
+          <text x="737" y="410" text-anchor="middle" class="t-s">ผู้สมัคร 10</text>
+          <path d="M870,345 H888" class="e" marker-end="url(#ah)"/>
+          <text x="880" y="410" text-anchor="middle" class="t-s">5 อันดับ</text>
+        </g>
+        <path d="M935,310 V122" class="e" marker-end="url(#ah)"/>
+        <text x="943" y="220" class="t-s">คำตอบ</text>
+
+        <!-- fix badges -->
+        <g class="after-only badge"><circle cx="455" cy="362" r="12"/><text x="455" y="367" text-anchor="middle">A</text></g>
+        <g class="after-only badge"><circle cx="860" cy="292" r="12"/><text x="860" y="297" text-anchor="middle">B</text></g>
+        <g class="before-only badge-bad"><circle cx="455" cy="362" r="12"/><text x="455" y="367" text-anchor="middle">!</text></g>
+      </svg>
+    </div>
+    <p class="legend" id="slide-caption"></p>
+  </section>
+
+  <!-- ===== 2. problems ===== -->
+  <section class="stack">
+    <span class="eyebrow">ขั้นที่ 2 จาก 4 · ผิดตรงไหน</span>
+    <h2>ปัญหาที่ 1: BM25 ตัดคำภาษาไทยไม่ได้</h2>
+    <p class="prose">ภาษาอังกฤษเว้นวรรคระหว่างคำ แต่ภาษาไทยไม่เว้น ตัวตัดคำ <code>standard</code> ตัดที่ช่องว่างอย่างเดียว ประโยคไทยทั้งประโยคจึงกลายเป็น "คำ" ยาว ๆ คำเดียว ซึ่งไม่ตรงกับอะไรในดัชนีเลย</p>
+
+    <div class="tokens" aria-label="เทียบการตัดคำ">
+      <div class="tok-row"><span class="label">คำถาม</span><div class="chips"><span class="chip th">อาการของหัดเยอรมัน</span></div></div>
+      <div class="tok-row"><span class="label">standard →</span><div class="chips"><span class="chip bad th">อาการของหัดเยอรมัน</span><span class="bar-cap">1 คำ ค้นเจอ 0 chunk</span></div></div>
+      <div class="tok-row"><span class="label">thai →</span><div class="chips"><span class="chip good th">อาการ</span><span class="chip good th">หัดเยอรมัน</span><span class="bar-cap">2 คำจริง ("ของ" เป็น stopword ถูกตัดทิ้ง)</span></div></div>
+    </div>
+    <p class="note prose">ผลคือ BM25 หา<b>ไม่เจอเลย</b>ใน <b>22 จาก 24</b> ข้อของชุดทั่วไป และ <b>13 จาก 20</b> ข้อของชุดเจาะลึก ระบบที่เรียกว่า "hybrid" จริง ๆ แล้วค้นด้วย vector อยู่ฝั่งเดียว</p>
+    <p class="prose">ที่ดูใน OpenSearch Dashboards ไม่เห็นความต่าง เพราะหน้า Discover โชว์ข้อความต้นฉบับ (<code>_source</code>) ซึ่งเหมือนกันทั้งสองตู้ ส่วนที่ต่างคือดัชนีคำที่ซ่อนอยู่ข้างใน</p>
+
+    <h2 style="margin-top:20px">ปัญหาที่ 2: ไม่มีขั้นไหนอ่านคำถามคู่กับเนื้อหาจริง</h2>
+    <p class="prose">BM25 แค่นับคำที่ตรงกัน vector ย่อคำถามกับ chunk เป็นตัวเลข<b>แยกกัน</b>แล้วเทียบ ส่วน RRF ดูแค่ลำดับ ไม่ได้ดูเนื้อหาเลย ถ้าคำตอบเป็นข้อเท็จจริงเล็ก ๆ ที่ซ่อนอยู่กลาง chunk ยาว เช่น ขนาดยา ปี หรือเปอร์เซ็นต์ chunk ที่ถูกอาจตกไปอยู่อันดับ 2–3 ตามหลัง chunk ที่แค่ "พูดเรื่องเดียวกัน"</p>
+
+    <div class="example">
+      <b>ตัวอย่างจริง: RRF ทำให้ chunk ที่ถูกตกอันดับ</b>
+      <p class="bar-cap">คำถาม "อาการของหัดเยอรมัน" ในระบบ (2) ก่อนผ่าน reranker · RRF = 1/(60 + อันดับ) โดยนับอันดับแรกเป็น 0 · ช่อง "–" คือไม่ติด 10 อันดับ</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>อันดับ RRF</th><th>chunk</th><th>อันดับใน BM25</th><th>อันดับใน vector</th><th>คะแนน RRF</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>doc_0 ชื่อบทความ</td><td>3</td><td>5</td><td>0.0318</td></tr>
+          <tr><td>2</td><td>doc_4 ภาวะแทรกซ้อน</td><td>4</td><td>8</td><td>0.0308</td></tr>
+          <tr><td>3</td><td>doc_1 โรคหัดเยอรมัน</td><td>9</td><td>4</td><td>0.0306</td></tr>
+          <tr><td class="hl">9</td><td class="hl"><b>doc_3 อาการของโรคหัดเยอรมัน</b></td><td class="hl">–</td><td class="hl">1</td><td class="hl">0.0167</td></tr>
+        </tbody>
+      </table></div>
+      <p class="bar-cap">vector จัด doc_3 ไว้อันดับ 1 แต่ BM25 หาไม่เจอ ได้คะแนนแค่ฝั่งเดียว เลยแพ้ chunk ที่ได้อันดับกลาง ๆ ทั้งสองฝั่ง ถ้าส่ง 5 อันดับให้ LLM เลย doc_3 จะหลุด แต่ระบบ (2) ส่ง 10 ตัวให้ reranker ก่อน reranker จึงดึง doc_3 กลับขึ้นอันดับ 1 (คะแนน 0.9991)</p>
+    </div>
+  </section>
+
+  <!-- ===== 3. fixes ===== -->
+  <section class="stack">
+    <span class="eyebrow">ขั้นที่ 3 จาก 4 · แก้ 2 อย่าง</span>
+    <h2>ระบบที่ปรับปรุง (โจทย์ข้อ 2)</h2>
+
+    <div class="flow" role="img" aria-label="ระบบใหม่: คำถามค้นตู้ BM25 ที่ตัดคำแบบ thai และตู้ vector เดิม, RRF รวมเป็นผู้สมัคร 10 ตัว, แต่ละตัวถูกตัดเป็นหน้าต่าง 500 ตัวอักษร, reranker bge-reranker-v2-m3 ให้คะแนนทุกหน้าต่าง, chunk ใช้คะแนนหน้าต่างที่ดีที่สุด, 5 อันดับแรกส่งให้ LLM ตัวเดิม">
+      <div class="flow-inner">
+        <div class="node"><b>คำถาม</b><small class="th">เช่น คนเป็นกรดไหลย้อนควรเลี่ยงซอสมะเขือเทศกับกระเทียมไหม</small></div>
+        <div class="arrow">ค้นทั้งสองทาง · ทางละ 10 อันดับ</div>
+        <div class="row two">
+          <div class="node good"><span class="tag good">แก้ A</span><b>BM25 ตัดคำแบบ <code>thai</code></b><small>ตัดคำไทยด้วยพจนานุกรม chunk และข้อความเหมือนเดิมทุกตัวอักษร เปลี่ยนแค่วิธีตัดคำ (<code>improved_ingest.py</code>)</small></div>
+          <div class="node"><b>ตู้ Vector (bge-m3)</b><small>ไม่เปลี่ยน</small></div>
+        </div>
+        <div class="arrow">RRF รวม → ผู้สมัคร 10 ตัว</div>
+        <div class="node good"><span class="tag good">แก้ B</span><b>Reranker อ่านคำถามคู่กับเนื้อหา</b><small>ตัดผู้สมัครแต่ละตัวเป็นหน้าต่างละ 500 ตัวอักษร (เลื่อนทีละ 400) โมเดล <code>bge-reranker-v2-m3</code> ให้คะแนนทุกหน้าต่าง 0–1 คะแนนของ chunk = คะแนนหน้าต่างที่ดีที่สุด (MaxP) · <code>improved_search.py</code></small></div>
+        <div class="arrow">เลือก 5 อันดับตามคะแนน reranker</div>
+        <div class="node llm"><b>LLM ตัวเดิมเขียนคำตอบ</b><small>ไม่เปลี่ยน (โจทย์ห้ามเปลี่ยน LLM)</small></div>
+      </div>
+    </div>
+
+    <div class="stack prose">
+      <h3>ทำไม reranker ช่วยได้</h3>
+      <p>โมเดล vector (bi-encoder) อ่านคำถามกับ chunk <b>แยกกัน</b> แปลงเป็นตัวเลขแล้วเทียบ ส่วน reranker (cross-encoder) อ่าน<b>พร้อมกัน</b> ในข้อความเดียว ทุกคำในคำถามมองเห็นทุกคำในเนื้อหา (attention 24 ชั้น) จึงตัดสินได้ว่าเนื้อหานี้ "ตอบ" คำถามหรือแค่ "พูดเรื่องเดียวกัน" แม่นกว่าแต่ช้ากว่า และเตรียมล่วงหน้าไม่ได้ จึงใช้ตรวจเฉพาะ 10 ตัวที่ค้นมาแล้ว</p>
+      <p>บทความที่อาจารย์แนะนำ (Jev reranker) เป็นบริการ API ที่ต้องใช้ key แบบเสียเงินและต้องใช้ Python 3.11 ขึ้นไป บทความเทียบตัวเองกับ <code>bge-reranker-v2-m3</code> และบอกว่าคุณภาพใกล้เคียงกัน เราจึงเลือก bge ซึ่งฟรี รันในเครื่องได้ รองรับภาษาไทย และเป็นตระกูลเดียวกับ bge-m3</p>
+    </div>
+
+    <div class="stack">
+      <h3>ทำไมต้องตัดเป็นหน้าต่าง (MaxP): บทเรียนจากการทดลอง</h3>
+      <p class="prose">ครั้งแรกส่งทั้ง chunk ให้ reranker แล้วผลบางข้อกลับ<b>แย่ลง</b> เพราะเราตั้งให้ reranker อ่านได้แค่ 512 tokens (<code>max_length=512</code> เพื่อให้รันบน CPU ได้เร็ว ตัวโมเดลรองรับได้ประมาณ 8,000) แต่ chunk ยาวได้ถึง 22,970 ตัวอักษร ส่วนท้ายของ chunk รวมถึงคำตอบจึงถูกตัดทิ้ง</p>
+      <div class="chunkbar" aria-label="แผนภาพ chunk doc_48">
+        <div class="bar-cap"><b>ก่อน:</b> doc_48 (8,404 ตัวอักษร) ส่วนที่แรเงาคือทั้งหมดที่ reranker มองเห็น ขีดสีส้มคือคำตอบ</div>
+        <div class="bar"><div class="seen" style="width:12%"></div><div class="answer" style="left:30%"></div></div>
+        <div class="bar-cap"><b>หลัง:</b> ตัดเป็นหน้าต่างละ 500 ตัวอักษรที่ซ้อนกัน ทุกหน้าต่างได้คะแนน หน้าต่างที่มีคำตอบจึงชนะ</div>
+        <div class="bar" id="winbar"><div class="answer" style="left:30%"></div></div>
+      </div>
+      <p class="note prose">ผลกับคำถามเรื่องซอสมะเขือเทศ (h02): chunk ที่ถูกขยับจาก<b>อันดับ 5</b> (ส่งทั้ง chunk) เป็น<b>อันดับ 1</b> (ตัดเป็นหน้าต่าง) และคำถามเรื่องยาปฏิชีวนะสำหรับอหิวาต์ (h18) ก็เหมือนกัน</p>
+    </div>
+  </section>
+
+  <!-- ===== 4. results ===== -->
+  <section class="stack">
+    <span class="eyebrow">ขั้นที่ 4 จาก 4 · ผลการวัด (โจทย์ข้อ 3)</span>
+    <h2>ดีขึ้นจริงไหม</h2>
+    <p class="prose">ใช้คำถาม 44 ข้อ ทุกข้อกำหนดเฉลยไว้<b>ก่อน</b>รันการค้นหา ว่า chunk ไหนคือตัวที่ถูก แล้วดูว่าแต่ละระบบจัด chunk นั้นไว้อันดับเท่าไร วัดเฉพาะส่วนค้นหา เพราะ LLM เป็นตัวเดิม และจะตอบถูกได้ก็ต่อเมื่อได้ chunk ที่ถูก ทดลอง 4 แบบโดยเพิ่มการแก้ทีละอย่าง เพื่อดูผลของแต่ละตัวแยกกัน (ablation)</p>
+
+    <div class="tabs" role="group" aria-label="ชุดคำถาม">
+      <button type="button" id="set-hard" aria-pressed="true">ชุดเจาะลึก (20)</button>
+      <button type="button" id="set-easy" aria-pressed="false">ชุดทั่วไป (24)</button>
+    </div>
+    <div class="tabs" role="group" aria-label="ตัวชี้วัด">
+      <button type="button" id="m-mrr" aria-pressed="true">MRR@5</button>
+      <button type="button" id="m-hit1" aria-pressed="false">Hit@1</button>
+      <button type="button" id="m-r1" aria-pressed="false">Recall@1</button>
+      <button type="button" id="m-r3" aria-pressed="false">Recall@3</button>
+      <button type="button" id="m-r5" aria-pressed="false">Recall@5</button>
+    </div>
+    <p class="legend" id="metric-help"></p>
+    <div class="chart" id="chart"></div>
+
+    <div class="table-wrap">
+      <table id="table" aria-label="ตัวชี้วัดทั้งหมด"></table>
+    </div>
+    <p class="prose" id="verdict"></p>
+  </section>
+
+  <!-- ===== limits ===== -->
+  <section class="stack">
+    <span class="eyebrow">รายงานตามจริง</span>
+    <h2>ข้อจำกัดที่พบ</h2>
+    <ul class="limits prose">
+      <li><b>ชุดคำถามเล็ก (44 ข้อ):</b> บอกแนวโน้มได้ แต่ยังสรุปทางสถิติไม่ได้ ชุดเจาะลึกต่างกัน 5 ข้อ</li>
+      <li><b>เฉลยของชุดทั่วไปเลือกจากหัวข้อ chunk:</b> บางครั้ง chunk อื่นก็ตอบได้ แต่ไม่ได้นับว่าถูก เช่น q03 ตัวที่ขึ้นอันดับ 1 (doc_1 บทนำโรค) ก็เกี่ยวข้องจริง</li>
+      <li><b>Context ไม่ได้ใช้ทั้งบทความ:</b> ในโค้ดเดิม <code>full_doc_content = doc.page_content</code> LLM เขียน context จากตัว chunk เอง ไม่ได้เห็นทั้งบทความอย่างที่ Anthropic ตั้งใจ</li>
+      <li><b><code>chunk_size=256</code> ไม่ถูกใช้:</b> <code>MarkdownNodeParser</code> ไม่มีช่องตั้งค่านี้ จึงตัดตามหัวข้ออย่างเดียว chunk ยาว 258–22,970 ตัวอักษร (เฉลี่ย 4,465)</li>
+      <li><b>ตัวตัดความยาว context นับคำจากช่องว่าง:</b> <code>truncate_context()</code> ใช้ <code>split()</code> ภาษาไทยจึงแทบไม่ถูกตัด prompt อาจยาวเกิน 4,000 tokens</li>
+      <li><b>Prompt ไม่ได้สั่งให้ตอบจากเอกสารเท่านั้น:</b> LLM อาจเติมความรู้ของตัวเอง (hallucination) ไม่ได้แก้ เพราะโจทย์ให้ปรับเฉพาะส่วนค้นหา</li>
+      <li><b>ตัวตัดคำ thai หั่นคำที่ไม่มีในพจนานุกรมผิด:</b> เช่น "เมดไทย" → เม | ด | ไทย</li>
+      <li><b>ช้าลงมาก:</b> ~14 วินาทีต่อคำถามบน CPU ถ้ามี GPU จะเร็วขึ้นมาก</li>
+    </ul>
+  </section>
+
+  <!-- ===== cheat sheet ===== -->
+  <section class="stack">
+    <span class="eyebrow">สำหรับนำเสนอในห้อง</span>
+    <h2>พูดใน 1 นาที</h2>
+    <ol class="points prose">
+      <li><span>ระบบของวิชาเรียกตัวเองว่า hybrid search แต่ฝั่งค้นด้วยคำตัดคำภาษาไทยไม่ได้ จึงหาไม่เจอเลยในคำถามภาษาไทยเกือบทุกข้อ</span></li>
+      <li><span>แก้ A: เปลี่ยนตัวตัดคำของ OpenSearch เป็น <code>thai</code> แค่ค่าเดียว ข้อมูลเดิม chunk เดิม ตอนนี้ค้นด้วยคำได้ทุกข้อ</span></li>
+      <li><span>แก้ B: เพิ่ม reranker ฟรีแบบ cross-encoder ที่อ่านคำถามคู่กับเนื้อหา ใช้กับผู้สมัคร 10 ตัวที่ค้นมาแล้ว</span></li>
+      <li><span>บทเรียน: เราจำกัด reranker ไว้ที่ 512 tokens เพื่อความเร็ว คำตอบที่อยู่ท้าย chunk ยาวเลยถูกมองข้าม การให้คะแนนเป็นหน้าต่าง 500 ตัวอักษรแล้วเลือกหน้าต่างที่ดีที่สุด (MaxP) แก้ได้</span></li>
+      <li><span>วัดด้วยคำถาม 44 ข้อที่กำหนดเฉลยไว้ก่อน ชุดเจาะลึก Hit@1 0.75 → 1.00 และ Recall@1 0.688 → 0.912 และรายงานทั้งข้อที่ดีขึ้นและข้อที่แย่ลง</span></li>
+    </ol>
+
+    <div class="terms">
+      <div class="term"><b>BM25</b><span>ค้นด้วยคำ (lexical) ให้คะแนนตามจำนวนครั้งที่คำในคำถามโผล่ใน chunk และคำนั้นหายากแค่ไหน</span></div>
+      <div class="term"><b>Analyzer</b><span>กฎที่ใช้ตัดข้อความเป็นคำ ก่อนเก็บลงดัชนีและก่อนค้นหา</span></div>
+      <div class="term"><b>bi-encoder</b><span>แปลงคำถามกับ chunk เป็นตัวเลขแยกกันแล้วเทียบ (bge-m3) ค้นด้วยความหมาย (semantic) เร็ว</span></div>
+      <div class="term"><b>cross-encoder</b><span>อ่านคำถามกับ chunk พร้อมกัน แล้วให้คะแนนความเกี่ยวข้องตัวเดียว แม่นแต่ช้า</span></div>
+      <div class="term"><b>RRF</b><span>รวมรายการอันดับ: แต่ละรายการให้ 1/(60 + อันดับ) กับทุก chunk ที่มันเจอ ใช้อันดับไม่ใช่คะแนน</span></div>
+      <div class="term"><b>MaxP</b><span>ให้คะแนนข้อความยาวด้วยท่อนที่ดีที่สุด แทนที่จะดูแค่ 512 tokens แรก</span></div>
+      <div class="term"><b>Recall@k</b><span>ใน k อันดับแรก เจอ chunk ที่ถูกครบกี่ส่วนจากทั้งหมด</span></div>
+      <div class="term"><b>MRR</b><span>ค่าเฉลี่ยของ 1 ÷ อันดับของตัวที่ถูกตัวแรก อันดับ 1 = 1.0 อันดับ 2 = 0.5</span></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ผลจาก eval/eval_results.json (44 คำถาม, top-5) · Recall@1/@3 คิดด้วย evaluate.py --rescore
+const RESULTS = {
+  easy: [
+    { name: "(1) ระบบเดิม", sub: "standard BM25 + vector + RRF", hit1: 1.00, hit5: 1.00, r1: 0.812, r3: 0.917, r5: 0.958, mrr: 1.000, zero: "22/24", sec: 0.2 },
+    { name: "(2A) + Thai BM25", sub: "แก้ A อย่างเดียว", hit1: 0.875, hit5: 1.00, r1: 0.729, r3: 0.917, r5: 0.958, mrr: 0.924, zero: "0/24", sec: 0.2 },
+    { name: "(2B) + reranker อ่าน 512 tokens แรก", sub: "แก้ A + B แบบไม่ตัดหน้าต่าง", hit1: 1.00, hit5: 1.00, r1: 0.812, r3: 0.938, r5: 0.938, mrr: 1.000, zero: "0/24", sec: 5.7 },
+    { name: "(2) ระบบใหม่", sub: "Thai BM25 + reranker (MaxP)", hit1: 0.917, hit5: 1.00, r1: 0.750, r3: 0.958, r5: 0.958, mrr: 0.958, zero: "0/24", sec: 13.9, final: true },
+  ],
+  hard: [
+    { name: "(1) ระบบเดิม", sub: "standard BM25 + vector + RRF", hit1: 0.75, hit5: 1.00, r1: 0.688, r3: 0.950, r5: 0.975, mrr: 0.850, zero: "13/20", sec: 0.2 },
+    { name: "(2A) + Thai BM25", sub: "แก้ A อย่างเดียว", hit1: 0.95, hit5: 1.00, r1: 0.863, r3: 0.963, r5: 0.975, mrr: 0.967, zero: "0/20", sec: 0.2 },
+    { name: "(2B) + reranker อ่าน 512 tokens แรก", sub: "แก้ A + B แบบไม่ตัดหน้าต่าง", hit1: 0.85, hit5: 1.00, r1: 0.762, r3: 0.863, r5: 0.963, mrr: 0.887, zero: "0/20", sec: 5.8 },
+    { name: "(2) ระบบใหม่", sub: "Thai BM25 + reranker (MaxP)", hit1: 1.00, hit5: 1.00, r1: 0.912, r3: 0.963, r5: 0.988, mrr: 1.000, zero: "0/20", sec: 14.9, final: true },
+  ],
+  verdict: {
+    easy: "ชุดทั่วไป: ระบบเดิมจัดอันดับ 1 ถูกทุกข้ออยู่แล้ว ระบบใหม่พลาด 2 ข้อ (q03, q04) โดยตัวที่ถูกตกไปอันดับ 2 แต่ยังอยู่ใน 5 อันดับที่ส่งให้ LLM (Hit@5 = 1.00) Recall@3 กลับดีขึ้น (0.917 → 0.958) เพราะ reranker ดึงคำตอบตัวที่สองของข้อ q02 และ q12 ขึ้นมา ส่วนที่แย่ลงคือ q04 คำตอบตัวที่สอง (doc_1) หลุดจาก 5 อันดับ",
+    hard: "ชุดเจาะลึก: ระบบใหม่จัด chunk ที่ถูกไว้อันดับ 1 ครบทั้ง 20 ข้อ (เดิม 15 ข้อ) ดีขึ้น 5 ข้อ ไม่มีข้อไหนแย่ลงในอันดับแรก Recall@1 จาก 0.688 เป็น 0.912 ดูแถว 2B: reranker ที่ไม่ตัดหน้าต่างทำให้ 2 ข้อแย่ลง (Recall@3 ตกเหลือ 0.863) แสดงว่า MaxP จำเป็น",
+  },
+};
+
+const METRICS = {
+  mrr: { label: "MRR@5", digits: 3, help: "MRR@5: ค่าเฉลี่ยของ 1 ÷ อันดับของ chunk ที่ถูก 1.00 คือถูกอันดับ 1 ทุกข้อ" },
+  hit1: { label: "Hit@1", digits: 2, help: "Hit@1: สัดส่วนข้อที่ chunk อันดับ 1 เป็นตัวที่ถูก" },
+  r1: { label: "Recall@1", digits: 3, help: "Recall@1: อันดับ 1 เจอคำตอบกี่ส่วนจากทั้งหมด ข้อที่มีคำตอบหลาย chunk จะได้ไม่เต็ม 1.0 ระบบเลยไม่มีทางได้ 1.00" },
+  r3: { label: "Recall@3", digits: 3, help: "Recall@3: ใน 3 อันดับแรก เจอ chunk ที่ถูกครบกี่ส่วน" },
+  r5: { label: "Recall@5", digits: 3, help: "Recall@5: ใน 5 อันดับที่ส่งให้ LLM เจอ chunk ที่ถูกครบกี่ส่วน (ข้อมูลที่ LLM ได้อ่านครบแค่ไหน)" },
+};
+let state = { set: "hard", metric: "mrr" };
+
+function render() {
+  const rows = RESULTS[state.set];
+  const m = METRICS[state.metric];
+  document.getElementById("metric-help").textContent = m.help;
+  document.getElementById("chart").innerHTML = rows.map(r => `
+    <div class="c-row${r.final ? " final" : ""}">
+      <div class="c-name">${r.name}<small>${r.sub}</small></div>
+      <div class="c-track"><div class="c-fill" style="width:${(r[state.metric] * 100).toFixed(1)}%"></div></div>
+      <div class="c-val">${r[state.metric].toFixed(m.digits)}</div>
+    </div>`).join("");
+  document.getElementById("table").innerHTML =
+    `<thead><tr><th>ระบบ</th><th>Hit@1</th><th>Hit@5</th><th>Recall@1</th><th>Recall@3</th><th>Recall@5</th><th>MRR@5</th><th>BM25 ไม่เจอ</th><th>วินาที/ข้อ</th></tr></thead><tbody>` +
+    rows.map(r => `<tr class="${r.final ? "final" : ""}"><td>${r.name}</td><td>${r.hit1.toFixed(2)}</td><td>${r.hit5.toFixed(2)}</td><td>${r.r1.toFixed(3)}</td><td>${r.r3.toFixed(3)}</td><td>${r.r5.toFixed(3)}</td><td>${r.mrr.toFixed(3)}</td><td>${r.zero}</td><td>${r.sec.toFixed(1)}</td></tr>`).join("") +
+    `</tbody>`;
+  document.getElementById("verdict").textContent = RESULTS.verdict[state.set];
+  document.getElementById("set-hard").setAttribute("aria-pressed", String(state.set === "hard"));
+  document.getElementById("set-easy").setAttribute("aria-pressed", String(state.set === "easy"));
+  for (const key of Object.keys(METRICS))
+    document.getElementById("m-" + key).setAttribute("aria-pressed", String(state.metric === key));
+}
+document.getElementById("set-hard").onclick = () => { state.set = "hard"; render(); };
+document.getElementById("set-easy").onclick = () => { state.set = "easy"; render(); };
+for (const key of Object.keys(METRICS))
+  document.getElementById("m-" + key).onclick = () => { state.metric = key; render(); };
+
+// สลับแผนภาพ ก่อน / หลัง
+const CAPTIONS = {
+  before: "ก่อน: ระบบตามสไลด์ของอาจารย์ กล่องสีส้มคือจุดที่ภาษาไทยทำให้การค้นด้วยคำพัง ระบบ \"hybrid\" จึงเหลือแค่การค้นด้วยความหมายฝั่งเดียว",
+  after: "หลัง: โครงเดิม แก้ 2 จุด A = ตู้ BM25 ที่ตัดคำแบบ thai, B = reranker ระหว่าง RRF กับ LLM ส่วนอื่นทั้งหมดรวมถึง LLM ไม่ได้เปลี่ยน",
+};
+function setDiagram(mode) {
+  document.getElementById("slide").setAttribute("class", "slide mode-" + mode);
+  document.getElementById("slide-caption").textContent = CAPTIONS[mode];
+  document.getElementById("d-before").setAttribute("aria-pressed", String(mode === "before"));
+  document.getElementById("d-after").setAttribute("aria-pressed", String(mode === "after"));
+}
+document.getElementById("d-before").onclick = () => setDiagram("before");
+document.getElementById("d-after").onclick = () => setDiagram("after");
+setDiagram("before");
+
+// ขีดหน้าต่างบนแถบ "หลัง": หน้าต่าง 500 ตัวอักษร เลื่อนทีละ 400 ตลอด 8,404 ตัวอักษร
+const wb = document.getElementById("winbar");
+for (let s = 400; s < 8404; s += 400) {
+  const d = document.createElement("div");
+  d.className = "win"; d.style.left = (s / 8404 * 100).toFixed(2) + "%"; wb.appendChild(d);
+}
+render();
+</script>

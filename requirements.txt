@@ -1,0 +1,12 @@
+# ทดสอบบน Windows 11 + Python 3.10
+opensearch-py==3.2.0
+sentence-transformers==6.1.0
+llama-index-core==0.14.25
+llama-index-embeddings-huggingface==0.8.0
+openai==2.54.0
+tqdm==4.70.1
+# pin ไว้เพื่อเลี่ยง bug "No module named 'pwd'" บน Windows (ตาม readme-for-windows.md)
+langchain==0.1.6
+langchain-community==0.0.19
+langchain-core==0.1.23
+streamlit==1.65.0   # หน้าเว็บ app.py (ทางเลือก)

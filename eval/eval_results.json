@@ -1,0 +1,3870 @@
+{
+  "eval_questions.json": {
+    "summary": [
+      {
+        "config": "(1) ระบบเดิม: Standard BM25 + Vector + RRF",
+        "Hit@1": 1.0,
+        "Hit@5": 1.0,
+        "Recall@1": 0.8125,
+        "Recall@3": 0.9166666666666666,
+        "Recall@5": 0.9583333333333334,
+        "MRR@5": 1.0,
+        "BM25=0": "22/24",
+        "sec/query": 0.20810986558596292
+      },
+      {
+        "config": "(2A) + Thai BM25",
+        "Hit@1": 0.875,
+        "Hit@5": 1.0,
+        "Recall@1": 0.7291666666666666,
+        "Recall@3": 0.9166666666666666,
+        "Recall@5": 0.9583333333333334,
+        "MRR@5": 0.923611111111111,
+        "BM25=0": "0/24",
+        "sec/query": 0.20256668329238892
+      },
+      {
+        "config": "(2B) + Thai BM25 + Reranker (อ่านแค่ 512 tokens แรกของ chunk)",
+        "Hit@1": 1.0,
+        "Hit@5": 1.0,
+        "Recall@1": 0.8125,
+        "Recall@3": 0.9375,
+        "Recall@5": 0.9375,
+        "MRR@5": 1.0,
+        "BM25=0": "0/24",
+        "sec/query": 5.692605008681615
+      },
+      {
+        "config": "(2) ระบบใหม่: Thai BM25 + Reranker แบบ MaxP",
+        "Hit@1": 0.9166666666666666,
+        "Hit@5": 1.0,
+        "Recall@1": 0.75,
+        "Recall@3": 0.9583333333333334,
+        "Recall@5": 0.9583333333333334,
+        "MRR@5": 0.9583333333333334,
+        "BM25=0": "0/24",
+        "sec/query": 13.937530557314554
+      }
+    ],
+    "details": {
+      "(1) ระบบเดิม: Standard BM25 + Vector + RRF": [
+        {
+          "id": "q01",
+          "question": "โรคหัดและโรคหัดเยอรมันแตกต่างกันอย่างไร?",
+          "relevant": [
+            "doc_8",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_2",
+            "doc_3",
+            "doc_7",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q02",
+          "question": "อธิบายสาเหตุของโรคหัดเยอรมันและการป้องกัน",
+          "relevant": [
+            "doc_2",
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_0",
+            "doc_1",
+            "doc_13",
+            "doc_15"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q03",
+          "question": "ทำไมโรคหัดเยอรมันจึงมีอันตรายกับหญิงตั้งครรภ์?",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_1",
+            "doc_2",
+            "doc_11",
+            "doc_13"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q04",
+          "question": "ถ้าคนที่ฉีดวัคซีนป้องกันโรคหัดเยอรมันแล้ว จะมีโอกาสติดเชื้อหรือไม่?",
+          "relevant": [
+            "doc_13",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_2",
+            "doc_11",
+            "doc_1",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q05",
+          "question": "หัดเยอรมันติดต่อจากคนสู่คนได้ทางไหนบ้าง",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_3",
+            "doc_10",
+            "doc_0"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q06",
+          "question": "เด็กเป็นหัดเยอรมันจะมีผื่นและไข้ลักษณะแบบไหน",
+          "relevant": [
+            "doc_3",
+            "doc_7"
+          ],
+          "retrieved": [
+            "doc_7",
+            "doc_3",
+            "doc_1",
+            "doc_2",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q07",
+          "question": "ผู้ใหญ่ที่เป็นหัดเยอรมันอาจมีอาการข้ออักเสบหรือปวดข้อไหม",
+          "relevant": [
+            "doc_5"
+          ],
+          "retrieved": [
+            "doc_5",
+            "doc_3",
+            "doc_1",
+            "doc_9",
+            "doc_7"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q08",
+          "question": "ผู้ป่วยหัดเยอรมันควรหยุดเรียนหรือแยกตัวจากคนอื่นนานแค่ไหน",
+          "relevant": [
+            "doc_10"
+          ],
+          "retrieved": [
+            "doc_10",
+            "doc_3",
+            "doc_1",
+            "doc_2",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q09",
+          "question": "มีสมุนไพรไทยอะไรบ้างที่ใช้รักษาหัดเยอรมันตามตำราดั้งเดิม",
+          "relevant": [
+            "doc_12"
+          ],
+          "retrieved": [
+            "doc_12",
+            "doc_9",
+            "doc_0",
+            "doc_15",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q10",
+          "question": "ควรฉีดวัคซีน MMR ตอนเด็กอายุเท่าไร",
+          "relevant": [
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_11",
+            "doc_9",
+            "doc_6",
+            "doc_3"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q11",
+          "question": "เชื้อแบคทีเรียที่ทำให้เกิดอหิวาตกโรคชื่ออะไร",
+          "relevant": [
+            "doc_19",
+            "doc_18"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_25",
+            "doc_23",
+            "doc_24"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q12",
+          "question": "ท้องเสียถ่ายเป็นน้ำซาวข้าวเป็นอาการของโรคอะไร",
+          "relevant": [
+            "doc_20",
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_20",
+            "doc_18",
+            "doc_24",
+            "doc_42",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q13",
+          "question": "ถ้าเป็นอหิวาต์แล้วขาดน้ำรุนแรง อาจเกิดไตวายหรือช็อกได้ไหม",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_20",
+            "doc_18",
+            "doc_23",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q14",
+          "question": "ผู้ป่วยอหิวาต์ที่อาการไม่รุนแรง หมอรักษาด้วยการให้ดื่มอะไร",
+          "relevant": [
+            "doc_23",
+            "doc_24"
+          ],
+          "retrieved": [
+            "doc_23",
+            "doc_22",
+            "doc_24",
+            "doc_20",
+            "doc_26"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q15",
+          "question": "จะป้องกันตัวเองไม่ให้ติดอหิวาตกโรคได้อย่างไร",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_24",
+            "doc_23",
+            "doc_37",
+            "doc_19"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q16",
+          "question": "ทำไมคนอายุเกิน 60 ปีถึงเป็นต้อกระจกกันเกือบทุกคน",
+          "relevant": [
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_29",
+            "doc_42",
+            "doc_45",
+            "doc_27",
+            "doc_30"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q17",
+          "question": "ตามัวลงเรื่อยๆ โดยไม่เจ็บตา เป็นสัญญาณของต้อกระจกหรือเปล่า",
+          "relevant": [
+            "doc_30"
+          ],
+          "retrieved": [
+            "doc_30",
+            "doc_31",
+            "doc_28",
+            "doc_33",
+            "doc_36"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q18",
+          "question": "มียาหยอดตาที่รักษาต้อกระจกให้หายได้ไหม หรือต้องผ่าตัดอย่างเดียว",
+          "relevant": [
+            "doc_33"
+          ],
+          "retrieved": [
+            "doc_33",
+            "doc_35",
+            "doc_36",
+            "doc_28",
+            "doc_27"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q19",
+          "question": "ขั้นตอนการผ่าตัดสลายต้อกระจกด้วยคลื่นเสียงและใส่เลนส์แก้วตาเทียมเป็นอย่างไร",
+          "relevant": [
+            "doc_35",
+            "doc_34"
+          ],
+          "retrieved": [
+            "doc_34",
+            "doc_35",
+            "doc_33",
+            "doc_36",
+            "doc_32"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q20",
+          "question": "การใส่แว่นกันแดดช่วยชะลอการเกิดต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_37"
+          ],
+          "retrieved": [
+            "doc_37",
+            "doc_28",
+            "doc_29",
+            "doc_33",
+            "doc_30"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q21",
+          "question": "หูรูดหลอดอาหารส่วนล่างหย่อนทำให้เกิดโรคอะไร",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_44",
+            "doc_18",
+            "doc_46",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q22",
+          "question": "กินอิ่มเกินไปหรือใส่กางเกงคับเอวทำให้กรดไหลย้อนกำเริบได้ไหม",
+          "relevant": [
+            "doc_44"
+          ],
+          "retrieved": [
+            "doc_44",
+            "doc_42",
+            "doc_46",
+            "doc_45",
+            "doc_48"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q23",
+          "question": "อาการแสบร้อนกลางอกหลังกินอาหารเกิดจากอะไร",
+          "relevant": [
+            "doc_45",
+            "doc_42"
+          ],
+          "retrieved": [
+            "doc_45",
+            "doc_42",
+            "doc_21",
+            "doc_48",
+            "doc_46"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q24",
+          "question": "ถ้าปล่อยกรดไหลย้อนไว้นานๆ จะเกิดแผลหรือหลอดอาหารตีบได้ไหม",
+          "relevant": [
+            "doc_46"
+          ],
+          "retrieved": [
+            "doc_46",
+            "doc_45",
+            "doc_44",
+            "doc_42",
+            "doc_43"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ],
+      "(2A) + Thai BM25": [
+        {
+          "id": "q01",
+          "question": "โรคหัดและโรคหัดเยอรมันแตกต่างกันอย่างไร?",
+          "relevant": [
+            "doc_8",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_2",
+            "doc_3",
+            "doc_13",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q02",
+          "question": "อธิบายสาเหตุของโรคหัดเยอรมันและการป้องกัน",
+          "relevant": [
+            "doc_2",
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_0",
+            "doc_13",
+            "doc_10",
+            "doc_2"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 0.5
+        },
+        {
+          "id": "q03",
+          "question": "ทำไมโรคหัดเยอรมันจึงมีอันตรายกับหญิงตั้งครรภ์?",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_13",
+            "doc_6",
+            "doc_9",
+            "doc_11"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q04",
+          "question": "ถ้าคนที่ฉีดวัคซีนป้องกันโรคหัดเยอรมันแล้ว จะมีโอกาสติดเชื้อหรือไม่?",
+          "relevant": [
+            "doc_13",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_11",
+            "doc_2",
+            "doc_10",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q05",
+          "question": "หัดเยอรมันติดต่อจากคนสู่คนได้ทางไหนบ้าง",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_10",
+            "doc_13",
+            "doc_5"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q06",
+          "question": "เด็กเป็นหัดเยอรมันจะมีผื่นและไข้ลักษณะแบบไหน",
+          "relevant": [
+            "doc_3",
+            "doc_7"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_7",
+            "doc_8",
+            "doc_9",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q07",
+          "question": "ผู้ใหญ่ที่เป็นหัดเยอรมันอาจมีอาการข้ออักเสบหรือปวดข้อไหม",
+          "relevant": [
+            "doc_5"
+          ],
+          "retrieved": [
+            "doc_5",
+            "doc_9",
+            "doc_3",
+            "doc_1",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q08",
+          "question": "ผู้ป่วยหัดเยอรมันควรหยุดเรียนหรือแยกตัวจากคนอื่นนานแค่ไหน",
+          "relevant": [
+            "doc_10"
+          ],
+          "retrieved": [
+            "doc_10",
+            "doc_3",
+            "doc_6",
+            "doc_5",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q09",
+          "question": "มีสมุนไพรไทยอะไรบ้างที่ใช้รักษาหัดเยอรมันตามตำราดั้งเดิม",
+          "relevant": [
+            "doc_12"
+          ],
+          "retrieved": [
+            "doc_12",
+            "doc_16",
+            "doc_15",
+            "doc_0",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q10",
+          "question": "ควรฉีดวัคซีน MMR ตอนเด็กอายุเท่าไร",
+          "relevant": [
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_11",
+            "doc_9",
+            "doc_10",
+            "doc_8"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q11",
+          "question": "เชื้อแบคทีเรียที่ทำให้เกิดอหิวาตกโรคชื่ออะไร",
+          "relevant": [
+            "doc_19",
+            "doc_18"
+          ],
+          "retrieved": [
+            "doc_18",
+            "doc_19",
+            "doc_21",
+            "doc_25",
+            "doc_24"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q12",
+          "question": "ท้องเสียถ่ายเป็นน้ำซาวข้าวเป็นอาการของโรคอะไร",
+          "relevant": [
+            "doc_20",
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_20",
+            "doc_22",
+            "doc_24",
+            "doc_19",
+            "doc_18"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q13",
+          "question": "ถ้าเป็นอหิวาต์แล้วขาดน้ำรุนแรง อาจเกิดไตวายหรือช็อกได้ไหม",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_20",
+            "doc_23",
+            "doc_18",
+            "doc_19"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q14",
+          "question": "ผู้ป่วยอหิวาต์ที่อาการไม่รุนแรง หมอรักษาด้วยการให้ดื่มอะไร",
+          "relevant": [
+            "doc_23",
+            "doc_24"
+          ],
+          "retrieved": [
+            "doc_22",
+            "doc_23",
+            "doc_24",
+            "doc_19",
+            "doc_20"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.5,
+          "first_rank": 2,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q15",
+          "question": "จะป้องกันตัวเองไม่ให้ติดอหิวาตกโรคได้อย่างไร",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_24",
+            "doc_19",
+            "doc_23",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q16",
+          "question": "ทำไมคนอายุเกิน 60 ปีถึงเป็นต้อกระจกกันเกือบทุกคน",
+          "relevant": [
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_29",
+            "doc_37",
+            "doc_30",
+            "doc_42",
+            "doc_18"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q17",
+          "question": "ตามัวลงเรื่อยๆ โดยไม่เจ็บตา เป็นสัญญาณของต้อกระจกหรือเปล่า",
+          "relevant": [
+            "doc_30"
+          ],
+          "retrieved": [
+            "doc_30",
+            "doc_31",
+            "doc_36",
+            "doc_33",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q18",
+          "question": "มียาหยอดตาที่รักษาต้อกระจกให้หายได้ไหม หรือต้องผ่าตัดอย่างเดียว",
+          "relevant": [
+            "doc_33"
+          ],
+          "retrieved": [
+            "doc_33",
+            "doc_35",
+            "doc_36",
+            "doc_29",
+            "doc_37"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q19",
+          "question": "ขั้นตอนการผ่าตัดสลายต้อกระจกด้วยคลื่นเสียงและใส่เลนส์แก้วตาเทียมเป็นอย่างไร",
+          "relevant": [
+            "doc_35",
+            "doc_34"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_33",
+            "doc_36",
+            "doc_32"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q20",
+          "question": "การใส่แว่นกันแดดช่วยชะลอการเกิดต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_37"
+          ],
+          "retrieved": [
+            "doc_37",
+            "doc_33",
+            "doc_29",
+            "doc_30",
+            "doc_34"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q21",
+          "question": "หูรูดหลอดอาหารส่วนล่างหย่อนทำให้เกิดโรคอะไร",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_44",
+            "doc_46",
+            "doc_45",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q22",
+          "question": "กินอิ่มเกินไปหรือใส่กางเกงคับเอวทำให้กรดไหลย้อนกำเริบได้ไหม",
+          "relevant": [
+            "doc_44"
+          ],
+          "retrieved": [
+            "doc_44",
+            "doc_45",
+            "doc_48",
+            "doc_46",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q23",
+          "question": "อาการแสบร้อนกลางอกหลังกินอาหารเกิดจากอะไร",
+          "relevant": [
+            "doc_45",
+            "doc_42"
+          ],
+          "retrieved": [
+            "doc_45",
+            "doc_42",
+            "doc_48",
+            "doc_19",
+            "doc_25"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q24",
+          "question": "ถ้าปล่อยกรดไหลย้อนไว้นานๆ จะเกิดแผลหรือหลอดอาหารตีบได้ไหม",
+          "relevant": [
+            "doc_46"
+          ],
+          "retrieved": [
+            "doc_46",
+            "doc_45",
+            "doc_44",
+            "doc_43",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ],
+      "(2B) + Thai BM25 + Reranker (อ่านแค่ 512 tokens แรกของ chunk)": [
+        {
+          "id": "q01",
+          "question": "โรคหัดและโรคหัดเยอรมันแตกต่างกันอย่างไร?",
+          "relevant": [
+            "doc_8",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_2",
+            "doc_6",
+            "doc_3",
+            "doc_7"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q02",
+          "question": "อธิบายสาเหตุของโรคหัดเยอรมันและการป้องกัน",
+          "relevant": [
+            "doc_2",
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_13",
+            "doc_1",
+            "doc_10",
+            "doc_3"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q03",
+          "question": "ทำไมโรคหัดเยอรมันจึงมีอันตรายกับหญิงตั้งครรภ์?",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_1",
+            "doc_9",
+            "doc_10",
+            "doc_13"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q04",
+          "question": "ถ้าคนที่ฉีดวัคซีนป้องกันโรคหัดเยอรมันแล้ว จะมีโอกาสติดเชื้อหรือไม่?",
+          "relevant": [
+            "doc_13",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_10",
+            "doc_11",
+            "doc_2",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q05",
+          "question": "หัดเยอรมันติดต่อจากคนสู่คนได้ทางไหนบ้าง",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_10",
+            "doc_1",
+            "doc_3",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q06",
+          "question": "เด็กเป็นหัดเยอรมันจะมีผื่นและไข้ลักษณะแบบไหน",
+          "relevant": [
+            "doc_3",
+            "doc_7"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_7",
+            "doc_1",
+            "doc_8",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q07",
+          "question": "ผู้ใหญ่ที่เป็นหัดเยอรมันอาจมีอาการข้ออักเสบหรือปวดข้อไหม",
+          "relevant": [
+            "doc_5"
+          ],
+          "retrieved": [
+            "doc_5",
+            "doc_9",
+            "doc_3",
+            "doc_1",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q08",
+          "question": "ผู้ป่วยหัดเยอรมันควรหยุดเรียนหรือแยกตัวจากคนอื่นนานแค่ไหน",
+          "relevant": [
+            "doc_10"
+          ],
+          "retrieved": [
+            "doc_10",
+            "doc_9",
+            "doc_3",
+            "doc_1",
+            "doc_2"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q09",
+          "question": "มีสมุนไพรไทยอะไรบ้างที่ใช้รักษาหัดเยอรมันตามตำราดั้งเดิม",
+          "relevant": [
+            "doc_12"
+          ],
+          "retrieved": [
+            "doc_12",
+            "doc_16",
+            "doc_9",
+            "doc_15",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q10",
+          "question": "ควรฉีดวัคซีน MMR ตอนเด็กอายุเท่าไร",
+          "relevant": [
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_11",
+            "doc_9",
+            "doc_10",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q11",
+          "question": "เชื้อแบคทีเรียที่ทำให้เกิดอหิวาตกโรคชื่ออะไร",
+          "relevant": [
+            "doc_19",
+            "doc_18"
+          ],
+          "retrieved": [
+            "doc_18",
+            "doc_19",
+            "doc_24",
+            "doc_25",
+            "doc_20"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q12",
+          "question": "ท้องเสียถ่ายเป็นน้ำซาวข้าวเป็นอาการของโรคอะไร",
+          "relevant": [
+            "doc_20",
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_20",
+            "doc_18",
+            "doc_22",
+            "doc_24",
+            "doc_23"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q13",
+          "question": "ถ้าเป็นอหิวาต์แล้วขาดน้ำรุนแรง อาจเกิดไตวายหรือช็อกได้ไหม",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_20",
+            "doc_18",
+            "doc_23",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q14",
+          "question": "ผู้ป่วยอหิวาต์ที่อาการไม่รุนแรง หมอรักษาด้วยการให้ดื่มอะไร",
+          "relevant": [
+            "doc_23",
+            "doc_24"
+          ],
+          "retrieved": [
+            "doc_23",
+            "doc_22",
+            "doc_24",
+            "doc_21",
+            "doc_20"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q15",
+          "question": "จะป้องกันตัวเองไม่ให้ติดอหิวาตกโรคได้อย่างไร",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_24",
+            "doc_18",
+            "doc_23",
+            "doc_19"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q16",
+          "question": "ทำไมคนอายุเกิน 60 ปีถึงเป็นต้อกระจกกันเกือบทุกคน",
+          "relevant": [
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_29",
+            "doc_37",
+            "doc_30",
+            "doc_28",
+            "doc_27"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q17",
+          "question": "ตามัวลงเรื่อยๆ โดยไม่เจ็บตา เป็นสัญญาณของต้อกระจกหรือเปล่า",
+          "relevant": [
+            "doc_30"
+          ],
+          "retrieved": [
+            "doc_30",
+            "doc_29",
+            "doc_31",
+            "doc_28",
+            "doc_33"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q18",
+          "question": "มียาหยอดตาที่รักษาต้อกระจกให้หายได้ไหม หรือต้องผ่าตัดอย่างเดียว",
+          "relevant": [
+            "doc_33"
+          ],
+          "retrieved": [
+            "doc_33",
+            "doc_35",
+            "doc_29",
+            "doc_36",
+            "doc_37"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q19",
+          "question": "ขั้นตอนการผ่าตัดสลายต้อกระจกด้วยคลื่นเสียงและใส่เลนส์แก้วตาเทียมเป็นอย่างไร",
+          "relevant": [
+            "doc_35",
+            "doc_34"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_36",
+            "doc_33",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q20",
+          "question": "การใส่แว่นกันแดดช่วยชะลอการเกิดต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_37"
+          ],
+          "retrieved": [
+            "doc_37",
+            "doc_33",
+            "doc_30",
+            "doc_29",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q21",
+          "question": "หูรูดหลอดอาหารส่วนล่างหย่อนทำให้เกิดโรคอะไร",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_44",
+            "doc_45",
+            "doc_42",
+            "doc_47"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q22",
+          "question": "กินอิ่มเกินไปหรือใส่กางเกงคับเอวทำให้กรดไหลย้อนกำเริบได้ไหม",
+          "relevant": [
+            "doc_44"
+          ],
+          "retrieved": [
+            "doc_44",
+            "doc_45",
+            "doc_48",
+            "doc_46",
+            "doc_43"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q23",
+          "question": "อาการแสบร้อนกลางอกหลังกินอาหารเกิดจากอะไร",
+          "relevant": [
+            "doc_45",
+            "doc_42"
+          ],
+          "retrieved": [
+            "doc_45",
+            "doc_42",
+            "doc_43",
+            "doc_48",
+            "doc_46"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q24",
+          "question": "ถ้าปล่อยกรดไหลย้อนไว้นานๆ จะเกิดแผลหรือหลอดอาหารตีบได้ไหม",
+          "relevant": [
+            "doc_46"
+          ],
+          "retrieved": [
+            "doc_46",
+            "doc_45",
+            "doc_44",
+            "doc_47",
+            "doc_43"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ],
+      "(2) ระบบใหม่: Thai BM25 + Reranker แบบ MaxP": [
+        {
+          "id": "q01",
+          "question": "โรคหัดและโรคหัดเยอรมันแตกต่างกันอย่างไร?",
+          "relevant": [
+            "doc_8",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_2",
+            "doc_10",
+            "doc_3",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "q02",
+          "question": "อธิบายสาเหตุของโรคหัดเยอรมันและการป้องกัน",
+          "relevant": [
+            "doc_2",
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_13",
+            "doc_1",
+            "doc_10",
+            "doc_0"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q03",
+          "question": "ทำไมโรคหัดเยอรมันจึงมีอันตรายกับหญิงตั้งครรภ์?",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_1",
+            "doc_6",
+            "doc_10",
+            "doc_9",
+            "doc_13"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.5,
+          "first_rank": 2,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q04",
+          "question": "ถ้าคนที่ฉีดวัคซีนป้องกันโรคหัดเยอรมันแล้ว จะมีโอกาสติดเชื้อหรือไม่?",
+          "relevant": [
+            "doc_13",
+            "doc_1"
+          ],
+          "retrieved": [
+            "doc_10",
+            "doc_13",
+            "doc_11",
+            "doc_6",
+            "doc_2"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 0.5,
+          "first_rank": 2,
+          "recall1": 0.0,
+          "recall3": 0.5
+        },
+        {
+          "id": "q05",
+          "question": "หัดเยอรมันติดต่อจากคนสู่คนได้ทางไหนบ้าง",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_3",
+            "doc_1",
+            "doc_10",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q06",
+          "question": "เด็กเป็นหัดเยอรมันจะมีผื่นและไข้ลักษณะแบบไหน",
+          "relevant": [
+            "doc_3",
+            "doc_7"
+          ],
+          "retrieved": [
+            "doc_7",
+            "doc_1",
+            "doc_3",
+            "doc_6",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q07",
+          "question": "ผู้ใหญ่ที่เป็นหัดเยอรมันอาจมีอาการข้ออักเสบหรือปวดข้อไหม",
+          "relevant": [
+            "doc_5"
+          ],
+          "retrieved": [
+            "doc_5",
+            "doc_9",
+            "doc_3",
+            "doc_1",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q08",
+          "question": "ผู้ป่วยหัดเยอรมันควรหยุดเรียนหรือแยกตัวจากคนอื่นนานแค่ไหน",
+          "relevant": [
+            "doc_10"
+          ],
+          "retrieved": [
+            "doc_10",
+            "doc_3",
+            "doc_9",
+            "doc_2",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q09",
+          "question": "มีสมุนไพรไทยอะไรบ้างที่ใช้รักษาหัดเยอรมันตามตำราดั้งเดิม",
+          "relevant": [
+            "doc_12"
+          ],
+          "retrieved": [
+            "doc_12",
+            "doc_16",
+            "doc_9",
+            "doc_15",
+            "doc_0"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q10",
+          "question": "ควรฉีดวัคซีน MMR ตอนเด็กอายุเท่าไร",
+          "relevant": [
+            "doc_13"
+          ],
+          "retrieved": [
+            "doc_13",
+            "doc_25",
+            "doc_11",
+            "doc_10",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q11",
+          "question": "เชื้อแบคทีเรียที่ทำให้เกิดอหิวาตกโรคชื่ออะไร",
+          "relevant": [
+            "doc_19",
+            "doc_18"
+          ],
+          "retrieved": [
+            "doc_18",
+            "doc_19",
+            "doc_24",
+            "doc_23",
+            "doc_25"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q12",
+          "question": "ท้องเสียถ่ายเป็นน้ำซาวข้าวเป็นอาการของโรคอะไร",
+          "relevant": [
+            "doc_20",
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_20",
+            "doc_18",
+            "doc_24",
+            "doc_23"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q13",
+          "question": "ถ้าเป็นอหิวาต์แล้วขาดน้ำรุนแรง อาจเกิดไตวายหรือช็อกได้ไหม",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_22",
+            "doc_18",
+            "doc_20",
+            "doc_23"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q14",
+          "question": "ผู้ป่วยอหิวาต์ที่อาการไม่รุนแรง หมอรักษาด้วยการให้ดื่มอะไร",
+          "relevant": [
+            "doc_23",
+            "doc_24"
+          ],
+          "retrieved": [
+            "doc_23",
+            "doc_22",
+            "doc_24",
+            "doc_20",
+            "doc_21"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q15",
+          "question": "จะป้องกันตัวเองไม่ให้ติดอหิวาตกโรคได้อย่างไร",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_23",
+            "doc_24",
+            "doc_13",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q16",
+          "question": "ทำไมคนอายุเกิน 60 ปีถึงเป็นต้อกระจกกันเกือบทุกคน",
+          "relevant": [
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_29",
+            "doc_30",
+            "doc_37",
+            "doc_27",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q17",
+          "question": "ตามัวลงเรื่อยๆ โดยไม่เจ็บตา เป็นสัญญาณของต้อกระจกหรือเปล่า",
+          "relevant": [
+            "doc_30"
+          ],
+          "retrieved": [
+            "doc_30",
+            "doc_29",
+            "doc_31",
+            "doc_28",
+            "doc_33"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q18",
+          "question": "มียาหยอดตาที่รักษาต้อกระจกให้หายได้ไหม หรือต้องผ่าตัดอย่างเดียว",
+          "relevant": [
+            "doc_33"
+          ],
+          "retrieved": [
+            "doc_33",
+            "doc_35",
+            "doc_36",
+            "doc_29",
+            "doc_34"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q19",
+          "question": "ขั้นตอนการผ่าตัดสลายต้อกระจกด้วยคลื่นเสียงและใส่เลนส์แก้วตาเทียมเป็นอย่างไร",
+          "relevant": [
+            "doc_35",
+            "doc_34"
+          ],
+          "retrieved": [
+            "doc_34",
+            "doc_35",
+            "doc_36",
+            "doc_33",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q20",
+          "question": "การใส่แว่นกันแดดช่วยชะลอการเกิดต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_37"
+          ],
+          "retrieved": [
+            "doc_37",
+            "doc_35",
+            "doc_30",
+            "doc_29",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q21",
+          "question": "หูรูดหลอดอาหารส่วนล่างหย่อนทำให้เกิดโรคอะไร",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_48",
+            "doc_45",
+            "doc_44",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q22",
+          "question": "กินอิ่มเกินไปหรือใส่กางเกงคับเอวทำให้กรดไหลย้อนกำเริบได้ไหม",
+          "relevant": [
+            "doc_44"
+          ],
+          "retrieved": [
+            "doc_44",
+            "doc_45",
+            "doc_48",
+            "doc_43",
+            "doc_49"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "q23",
+          "question": "อาการแสบร้อนกลางอกหลังกินอาหารเกิดจากอะไร",
+          "relevant": [
+            "doc_45",
+            "doc_42"
+          ],
+          "retrieved": [
+            "doc_45",
+            "doc_42",
+            "doc_46",
+            "doc_48",
+            "doc_43"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "q24",
+          "question": "ถ้าปล่อยกรดไหลย้อนไว้นานๆ จะเกิดแผลหรือหลอดอาหารตีบได้ไหม",
+          "relevant": [
+            "doc_46"
+          ],
+          "retrieved": [
+            "doc_46",
+            "doc_45",
+            "doc_43",
+            "doc_47",
+            "doc_48"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ]
+    }
+  },
+  "eval_questions_hard.json": {
+    "summary": [
+      {
+        "config": "(1) ระบบเดิม: Standard BM25 + Vector + RRF",
+        "Hit@1": 0.75,
+        "Hit@5": 1.0,
+        "Recall@1": 0.6875,
+        "Recall@3": 0.95,
+        "Recall@5": 0.975,
+        "MRR@5": 0.85,
+        "BM25=0": "13/20",
+        "sec/query": 0.20030990839004517
+      },
+      {
+        "config": "(2A) + Thai BM25",
+        "Hit@1": 0.95,
+        "Hit@5": 1.0,
+        "Recall@1": 0.8625,
+        "Recall@3": 0.9625,
+        "Recall@5": 0.975,
+        "MRR@5": 0.9666666666666668,
+        "BM25=0": "0/20",
+        "sec/query": 0.20125488042831421
+      },
+      {
+        "config": "(2B) + Thai BM25 + Reranker (อ่านแค่ 512 tokens แรกของ chunk)",
+        "Hit@1": 0.85,
+        "Hit@5": 1.0,
+        "Recall@1": 0.7625,
+        "Recall@3": 0.8625,
+        "Recall@5": 0.9625,
+        "MRR@5": 0.8866666666666667,
+        "BM25=0": "0/20",
+        "sec/query": 5.788497173786164
+      },
+      {
+        "config": "(2) ระบบใหม่: Thai BM25 + Reranker แบบ MaxP",
+        "Hit@1": 1.0,
+        "Hit@5": 1.0,
+        "Recall@1": 0.9125,
+        "Recall@3": 0.9625,
+        "Recall@5": 0.9875,
+        "MRR@5": 1.0,
+        "BM25=0": "0/20",
+        "sec/query": 14.863036859035493
+      }
+    ],
+    "details": {
+      "(1) ระบบเดิม: Standard BM25 + Vector + RRF": [
+        {
+          "id": "h01",
+          "question": "ยาโอเมพราโซลใช้รักษากรดไหลย้อนขนาดเท่าไรและนานกี่สัปดาห์",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_46",
+            "doc_42",
+            "doc_49",
+            "doc_41"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h02",
+          "question": "คนเป็นกรดไหลย้อนควรเลี่ยงซอสมะเขือเทศกับกระเทียมไหม",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_49",
+            "doc_46",
+            "doc_42",
+            "doc_45"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h03",
+          "question": "เชื้ออหิวาต์สายพันธุ์ O139 เคยระบาดครั้งใหญ่ที่ประเทศไหน",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_1",
+            "doc_2",
+            "doc_24"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h04",
+          "question": "แมลงวันนำเชื้ออหิวาต์มาสู่คนได้อย่างไร",
+          "relevant": [
+            "doc_19",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_25",
+            "doc_2",
+            "doc_26"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "h05",
+          "question": "ผ่าตัดต้อกระจกด้วยเลเซอร์ Femtosecond ดีกว่าวิธีมาตรฐานอย่างไร",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_33",
+            "doc_36",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h06",
+          "question": "เด็กอายุต่ำกว่า 10 ขวบควรฝังเลนส์แก้วตาเทียมไหม",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_41",
+            "doc_42",
+            "doc_34",
+            "doc_0"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h07",
+          "question": "ถ้าแม่ติดหัดเยอรมันตอนตั้งครรภ์เดือนที่ 2 ลูกมีโอกาสผิดปกติกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_23",
+            "doc_11",
+            "doc_21",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h08",
+          "question": "Forchheimer spots คืออะไร",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_6",
+            "doc_9",
+            "doc_2",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h09",
+          "question": "ทารกที่ติดหัดเยอรมันจากแม่มีโอกาสหูหนวกกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_11",
+            "doc_3",
+            "doc_1",
+            "doc_2"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h10",
+          "question": "หลังให้น้ำเกลือผู้ป่วยอหิวาต์มีอาการชาและเกร็งนิ้วมือนิ้วเท้า เกิดจากอะไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_23",
+            "doc_20",
+            "doc_19",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h11",
+          "question": "คนที่สัมผัสผู้ป่วยอหิวาต์ต้องอยู่บ้านเฝ้าดูอาการกี่วัน",
+          "relevant": [
+            "doc_24",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_20",
+            "doc_22",
+            "doc_24",
+            "doc_19",
+            "doc_25"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 0.5
+        },
+        {
+          "id": "h12",
+          "question": "หญิงตั้งครรภ์ติดหัดเยอรมันแต่ไม่อยากยุติการตั้งครรภ์ หมออาจฉีดยาอะไรให้",
+          "relevant": [
+            "doc_9"
+          ],
+          "retrieved": [
+            "doc_9",
+            "doc_13",
+            "doc_6",
+            "doc_11",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h13",
+          "question": "ทำไมเด็กทารกถึงขย้อนนมออกมาบ่อย",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_42",
+            "doc_45",
+            "doc_44",
+            "doc_48"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h14",
+          "question": "แอลกอฮอล์ล้างแผลฆ่าเชื้อหัดเยอรมันได้ไหม",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_12",
+            "doc_9",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h15",
+          "question": "แม่เป็นหัดเยอรมันช่วง 3 เดือนแรกของการตั้งครรภ์ ลูกจะเป็นต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_3",
+            "doc_6",
+            "doc_9",
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_10",
+            "doc_3",
+            "doc_13",
+            "doc_2"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.25,
+          "recall3": 0.5
+        },
+        {
+          "id": "h16",
+          "question": "ผู้ป่วยอหิวาต์มีภาวะโพแทสเซียมในเลือดต่ำได้อย่างไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_23",
+            "doc_21",
+            "doc_18",
+            "doc_22",
+            "doc_19"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.5,
+          "first_rank": 2,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h17",
+          "question": "ยาดอมเพอริโดนสำหรับกรดไหลย้อนต้องกินก่อนอาหารกี่นาที",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_44",
+            "doc_45",
+            "doc_49",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h18",
+          "question": "ทำไมไม่แจกยาปฏิชีวนะให้ทั้งชุมชนเพื่อป้องกันอหิวาต์",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_25",
+            "doc_23",
+            "doc_26"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h19",
+          "question": "เชื้อรูเบลลาไวรัสจัดอยู่ในตระกูลไวรัสอะไร",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_0",
+            "doc_6",
+            "doc_15"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h20",
+          "question": "เชื้ออหิวาต์ชนิดเอลเทอร์เริ่มพบในปี พ.ศ. อะไร",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_18",
+            "doc_19",
+            "doc_26",
+            "doc_1",
+            "doc_39"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.5,
+          "first_rank": 2,
+          "recall1": 0.0,
+          "recall3": 1.0
+        }
+      ],
+      "(2A) + Thai BM25": [
+        {
+          "id": "h01",
+          "question": "ยาโอเมพราโซลใช้รักษากรดไหลย้อนขนาดเท่าไรและนานกี่สัปดาห์",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_51",
+            "doc_43",
+            "doc_49",
+            "doc_41"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h02",
+          "question": "คนเป็นกรดไหลย้อนควรเลี่ยงซอสมะเขือเทศกับกระเทียมไหม",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_49",
+            "doc_44",
+            "doc_42",
+            "doc_46"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h03",
+          "question": "เชื้ออหิวาต์สายพันธุ์ O139 เคยระบาดครั้งใหญ่ที่ประเทศไหน",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_25",
+            "doc_24",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h04",
+          "question": "แมลงวันนำเชื้ออหิวาต์มาสู่คนได้อย่างไร",
+          "relevant": [
+            "doc_19",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_25",
+            "doc_18",
+            "doc_2",
+            "doc_21"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "h05",
+          "question": "ผ่าตัดต้อกระจกด้วยเลเซอร์ Femtosecond ดีกว่าวิธีมาตรฐานอย่างไร",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_33",
+            "doc_36",
+            "doc_27"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h06",
+          "question": "เด็กอายุต่ำกว่า 10 ขวบควรฝังเลนส์แก้วตาเทียมไหม",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_28",
+            "doc_36",
+            "doc_11"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h07",
+          "question": "ถ้าแม่ติดหัดเยอรมันตอนตั้งครรภ์เดือนที่ 2 ลูกมีโอกาสผิดปกติกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_11",
+            "doc_9",
+            "doc_3",
+            "doc_2"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h08",
+          "question": "Forchheimer spots คืออะไร",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_6",
+            "doc_9",
+            "doc_2",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h09",
+          "question": "ทารกที่ติดหัดเยอรมันจากแม่มีโอกาสหูหนวกกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_11",
+            "doc_3",
+            "doc_13",
+            "doc_9"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h10",
+          "question": "หลังให้น้ำเกลือผู้ป่วยอหิวาต์มีอาการชาและเกร็งนิ้วมือนิ้วเท้า เกิดจากอะไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_23",
+            "doc_19",
+            "doc_22",
+            "doc_48"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h11",
+          "question": "คนที่สัมผัสผู้ป่วยอหิวาต์ต้องอยู่บ้านเฝ้าดูอาการกี่วัน",
+          "relevant": [
+            "doc_24",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_24",
+            "doc_25",
+            "doc_19",
+            "doc_10",
+            "doc_20"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "h12",
+          "question": "หญิงตั้งครรภ์ติดหัดเยอรมันแต่ไม่อยากยุติการตั้งครรภ์ หมออาจฉีดยาอะไรให้",
+          "relevant": [
+            "doc_9"
+          ],
+          "retrieved": [
+            "doc_9",
+            "doc_13",
+            "doc_6",
+            "doc_11",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h13",
+          "question": "ทำไมเด็กทารกถึงขย้อนนมออกมาบ่อย",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_45",
+            "doc_48",
+            "doc_6",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h14",
+          "question": "แอลกอฮอล์ล้างแผลฆ่าเชื้อหัดเยอรมันได้ไหม",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_13",
+            "doc_10",
+            "doc_6",
+            "doc_25"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h15",
+          "question": "แม่เป็นหัดเยอรมันช่วง 3 เดือนแรกของการตั้งครรภ์ ลูกจะเป็นต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_3",
+            "doc_6",
+            "doc_9",
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_11",
+            "doc_1",
+            "doc_13",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.25,
+          "recall3": 0.25
+        },
+        {
+          "id": "h16",
+          "question": "ผู้ป่วยอหิวาต์มีภาวะโพแทสเซียมในเลือดต่ำได้อย่างไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_23",
+            "doc_22",
+            "doc_5",
+            "doc_18"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h17",
+          "question": "ยาดอมเพอริโดนสำหรับกรดไหลย้อนต้องกินก่อนอาหารกี่นาที",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_44",
+            "doc_49",
+            "doc_45",
+            "doc_47"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h18",
+          "question": "ทำไมไม่แจกยาปฏิชีวนะให้ทั้งชุมชนเพื่อป้องกันอหิวาต์",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_19",
+            "doc_23",
+            "doc_24",
+            "doc_18"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h19",
+          "question": "เชื้อรูเบลลาไวรัสจัดอยู่ในตระกูลไวรัสอะไร",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_6",
+            "doc_19",
+            "doc_13"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h20",
+          "question": "เชื้ออหิวาต์ชนิดเอลเทอร์เริ่มพบในปี พ.ศ. อะไร",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_1",
+            "doc_26",
+            "doc_39"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ],
+      "(2B) + Thai BM25 + Reranker (อ่านแค่ 512 tokens แรกของ chunk)": [
+        {
+          "id": "h01",
+          "question": "ยาโอเมพราโซลใช้รักษากรดไหลย้อนขนาดเท่าไรและนานกี่สัปดาห์",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_43",
+            "doc_42",
+            "doc_46",
+            "doc_44"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h02",
+          "question": "คนเป็นกรดไหลย้อนควรเลี่ยงซอสมะเขือเทศกับกระเทียมไหม",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_44",
+            "doc_45",
+            "doc_42",
+            "doc_43",
+            "doc_48"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.2,
+          "first_rank": 5,
+          "recall1": 0.0,
+          "recall3": 0.0
+        },
+        {
+          "id": "h03",
+          "question": "เชื้ออหิวาต์สายพันธุ์ O139 เคยระบาดครั้งใหญ่ที่ประเทศไหน",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_24",
+            "doc_20",
+            "doc_25"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h04",
+          "question": "แมลงวันนำเชื้ออหิวาต์มาสู่คนได้อย่างไร",
+          "relevant": [
+            "doc_19",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_18",
+            "doc_19",
+            "doc_26",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "h05",
+          "question": "ผ่าตัดต้อกระจกด้วยเลเซอร์ Femtosecond ดีกว่าวิธีมาตรฐานอย่างไร",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_33",
+            "doc_36",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h06",
+          "question": "เด็กอายุต่ำกว่า 10 ขวบควรฝังเลนส์แก้วตาเทียมไหม",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_28",
+            "doc_33",
+            "doc_36"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h07",
+          "question": "ถ้าแม่ติดหัดเยอรมันตอนตั้งครรภ์เดือนที่ 2 ลูกมีโอกาสผิดปกติกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_1",
+            "doc_9",
+            "doc_11",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h08",
+          "question": "Forchheimer spots คืออะไร",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_7",
+            "doc_18",
+            "doc_6",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h09",
+          "question": "ทารกที่ติดหัดเยอรมันจากแม่มีโอกาสหูหนวกกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_11",
+            "doc_3",
+            "doc_1",
+            "doc_10"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.3333333333333333,
+          "first_rank": 3,
+          "recall1": 0.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h10",
+          "question": "หลังให้น้ำเกลือผู้ป่วยอหิวาต์มีอาการชาและเกร็งนิ้วมือนิ้วเท้า เกิดจากอะไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_18",
+            "doc_23",
+            "doc_20",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h11",
+          "question": "คนที่สัมผัสผู้ป่วยอหิวาต์ต้องอยู่บ้านเฝ้าดูอาการกี่วัน",
+          "relevant": [
+            "doc_24",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_24",
+            "doc_20",
+            "doc_22",
+            "doc_23",
+            "doc_19"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.5,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "h12",
+          "question": "หญิงตั้งครรภ์ติดหัดเยอรมันแต่ไม่อยากยุติการตั้งครรภ์ หมออาจฉีดยาอะไรให้",
+          "relevant": [
+            "doc_9"
+          ],
+          "retrieved": [
+            "doc_9",
+            "doc_13",
+            "doc_1",
+            "doc_10",
+            "doc_11"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h13",
+          "question": "ทำไมเด็กทารกถึงขย้อนนมออกมาบ่อย",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_45",
+            "doc_48",
+            "doc_46",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h14",
+          "question": "แอลกอฮอล์ล้างแผลฆ่าเชื้อหัดเยอรมันได้ไหม",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_13",
+            "doc_10",
+            "doc_1",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h15",
+          "question": "แม่เป็นหัดเยอรมันช่วง 3 เดือนแรกของการตั้งครรภ์ ลูกจะเป็นต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_3",
+            "doc_6",
+            "doc_9",
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_29",
+            "doc_9",
+            "doc_10",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.75,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.25,
+          "recall3": 0.75
+        },
+        {
+          "id": "h16",
+          "question": "ผู้ป่วยอหิวาต์มีภาวะโพแทสเซียมในเลือดต่ำได้อย่างไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_18",
+            "doc_23",
+            "doc_22",
+            "doc_19"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h17",
+          "question": "ยาดอมเพอริโดนสำหรับกรดไหลย้อนต้องกินก่อนอาหารกี่นาที",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_45",
+            "doc_43",
+            "doc_46",
+            "doc_44"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h18",
+          "question": "ทำไมไม่แจกยาปฏิชีวนะให้ทั้งชุมชนเพื่อป้องกันอหิวาต์",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_18",
+            "doc_23",
+            "doc_24",
+            "doc_19",
+            "doc_25"
+          ],
+          "hit1": 0.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 0.2,
+          "first_rank": 5,
+          "recall1": 0.0,
+          "recall3": 0.0
+        },
+        {
+          "id": "h19",
+          "question": "เชื้อรูเบลลาไวรัสจัดอยู่ในตระกูลไวรัสอะไร",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_13",
+            "doc_15",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h20",
+          "question": "เชื้ออหิวาต์ชนิดเอลเทอร์เริ่มพบในปี พ.ศ. อะไร",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_26",
+            "doc_1",
+            "doc_25"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ],
+      "(2) ระบบใหม่: Thai BM25 + Reranker แบบ MaxP": [
+        {
+          "id": "h01",
+          "question": "ยาโอเมพราโซลใช้รักษากรดไหลย้อนขนาดเท่าไรและนานกี่สัปดาห์",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_42",
+            "doc_49",
+            "doc_44",
+            "doc_43"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h02",
+          "question": "คนเป็นกรดไหลย้อนควรเลี่ยงซอสมะเขือเทศกับกระเทียมไหม",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_44",
+            "doc_42",
+            "doc_45",
+            "doc_49"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h03",
+          "question": "เชื้ออหิวาต์สายพันธุ์ O139 เคยระบาดครั้งใหญ่ที่ประเทศไหน",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_2",
+            "doc_24",
+            "doc_25"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h04",
+          "question": "แมลงวันนำเชื้ออหิวาต์มาสู่คนได้อย่างไร",
+          "relevant": [
+            "doc_19",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_2",
+            "doc_25",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 0.5
+        },
+        {
+          "id": "h05",
+          "question": "ผ่าตัดต้อกระจกด้วยเลเซอร์ Femtosecond ดีกว่าวิธีมาตรฐานอย่างไร",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_34",
+            "doc_33",
+            "doc_36",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h06",
+          "question": "เด็กอายุต่ำกว่า 10 ขวบควรฝังเลนส์แก้วตาเทียมไหม",
+          "relevant": [
+            "doc_35"
+          ],
+          "retrieved": [
+            "doc_35",
+            "doc_33",
+            "doc_37",
+            "doc_34",
+            "doc_28"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h07",
+          "question": "ถ้าแม่ติดหัดเยอรมันตอนตั้งครรภ์เดือนที่ 2 ลูกมีโอกาสผิดปกติกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_6"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_9",
+            "doc_1",
+            "doc_3",
+            "doc_11"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h08",
+          "question": "Forchheimer spots คืออะไร",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_7",
+            "doc_6",
+            "doc_9",
+            "doc_2"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h09",
+          "question": "ทารกที่ติดหัดเยอรมันจากแม่มีโอกาสหูหนวกกี่เปอร์เซ็นต์",
+          "relevant": [
+            "doc_3"
+          ],
+          "retrieved": [
+            "doc_3",
+            "doc_6",
+            "doc_11",
+            "doc_9",
+            "doc_10"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h10",
+          "question": "หลังให้น้ำเกลือผู้ป่วยอหิวาต์มีอาการชาและเกร็งนิ้วมือนิ้วเท้า เกิดจากอะไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_22",
+            "doc_18",
+            "doc_23",
+            "doc_19"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h11",
+          "question": "คนที่สัมผัสผู้ป่วยอหิวาต์ต้องอยู่บ้านเฝ้าดูอาการกี่วัน",
+          "relevant": [
+            "doc_24",
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_24",
+            "doc_25",
+            "doc_23",
+            "doc_20",
+            "doc_22"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.5,
+          "recall3": 1.0
+        },
+        {
+          "id": "h12",
+          "question": "หญิงตั้งครรภ์ติดหัดเยอรมันแต่ไม่อยากยุติการตั้งครรภ์ หมออาจฉีดยาอะไรให้",
+          "relevant": [
+            "doc_9"
+          ],
+          "retrieved": [
+            "doc_9",
+            "doc_13",
+            "doc_10",
+            "doc_1",
+            "doc_11"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h13",
+          "question": "ทำไมเด็กทารกถึงขย้อนนมออกมาบ่อย",
+          "relevant": [
+            "doc_43"
+          ],
+          "retrieved": [
+            "doc_43",
+            "doc_45",
+            "doc_48",
+            "doc_46",
+            "doc_42"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h14",
+          "question": "แอลกอฮอล์ล้างแผลฆ่าเชื้อหัดเยอรมันได้ไหม",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_13",
+            "doc_1",
+            "doc_10",
+            "doc_9"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h15",
+          "question": "แม่เป็นหัดเยอรมันช่วง 3 เดือนแรกของการตั้งครรภ์ ลูกจะเป็นต้อกระจกได้ไหม",
+          "relevant": [
+            "doc_3",
+            "doc_6",
+            "doc_9",
+            "doc_29"
+          ],
+          "retrieved": [
+            "doc_6",
+            "doc_29",
+            "doc_9",
+            "doc_10",
+            "doc_1"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 0.75,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 0.25,
+          "recall3": 0.75
+        },
+        {
+          "id": "h16",
+          "question": "ผู้ป่วยอหิวาต์มีภาวะโพแทสเซียมในเลือดต่ำได้อย่างไร",
+          "relevant": [
+            "doc_21"
+          ],
+          "retrieved": [
+            "doc_21",
+            "doc_22",
+            "doc_23",
+            "doc_19",
+            "doc_18"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h17",
+          "question": "ยาดอมเพอริโดนสำหรับกรดไหลย้อนต้องกินก่อนอาหารกี่นาที",
+          "relevant": [
+            "doc_48"
+          ],
+          "retrieved": [
+            "doc_48",
+            "doc_45",
+            "doc_42",
+            "doc_43",
+            "doc_44"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h18",
+          "question": "ทำไมไม่แจกยาปฏิชีวนะให้ทั้งชุมชนเพื่อป้องกันอหิวาต์",
+          "relevant": [
+            "doc_25"
+          ],
+          "retrieved": [
+            "doc_25",
+            "doc_24",
+            "doc_23",
+            "doc_19",
+            "doc_18"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h19",
+          "question": "เชื้อรูเบลลาไวรัสจัดอยู่ในตระกูลไวรัสอะไร",
+          "relevant": [
+            "doc_2"
+          ],
+          "retrieved": [
+            "doc_2",
+            "doc_1",
+            "doc_13",
+            "doc_15",
+            "doc_6"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        },
+        {
+          "id": "h20",
+          "question": "เชื้ออหิวาต์ชนิดเอลเทอร์เริ่มพบในปี พ.ศ. อะไร",
+          "relevant": [
+            "doc_19"
+          ],
+          "retrieved": [
+            "doc_19",
+            "doc_18",
+            "doc_1",
+            "doc_2",
+            "doc_26"
+          ],
+          "hit1": 1.0,
+          "hit5": 1.0,
+          "recall5": 1.0,
+          "mrr5": 1.0,
+          "first_rank": 1,
+          "recall1": 1.0,
+          "recall3": 1.0
+        }
+      ]
+    }
+  }
+}

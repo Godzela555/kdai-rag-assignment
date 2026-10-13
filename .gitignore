@@ -1,0 +1,6 @@
+advrag/
+venv/
+__pycache__/
+*.log
+.env
+.impeccable/
