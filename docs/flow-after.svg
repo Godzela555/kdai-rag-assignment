@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40 1000 490" width="1000" height="490" class="mode-after"><style>
+svg { font-family: "Leelawadee UI", "Noto Sans Thai", "Sarabun", Tahoma, sans-serif; }
+.bg { fill: #ffffff; }
+.p-ingest { fill: #ece6f3; } .p-answer { fill: #e2f0e6; }
+.t-panel { font-size: 15px; font-weight: 600; fill: #17221f; }
+.t-b { font-size: 13px; font-weight: 600; fill: #17221f; }
+.t-s { font-size: 11px; fill: #5a6763; }
+.t-bad { fill: #b45309; font-weight: 600; } .t-good { fill: #0f766e; font-weight: 600; }
+.n rect { fill: #ffffff; stroke: #d4dbd7; stroke-width: 1.2; }
+.n.llm rect { stroke-dasharray: 5 3; stroke: #5a6763; }
+.n.user rect { stroke: #5a6763; }
+.n.bad rect { fill: #fbecd9; stroke: #b45309; stroke-width: 1.6; }
+.n.good rect { fill: #dcefeb; stroke: #0f766e; stroke-width: 1.8; }
+.e { fill: none; stroke: #5a6763; stroke-width: 1.3; } .e.dash { stroke-dasharray: 4 3; }
+.ah { fill: #5a6763; }
+.badge circle { fill: #0f766e; } .badge-bad circle { fill: #b45309; }
+.badge text, .badge-bad text { font-size: 13px; font-weight: 700; fill: #ffffff; }
+.t-title { font-size: 18px; font-weight: 700; fill: #17221f; }
+.mode-before .after-only, .mode-after .before-only { display: none; }
+</style><rect class="bg" x="0" y="-40" width="1000" height="490"/><text x="10" y="-12" class="t-title">ระบบใหม่ (2) · A = Thai BM25, B = Reranker แบบ MaxP</text>
+        <defs>
+          <marker id="ah-after" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="ah"/>
+          </marker>
+        </defs>
+
+        <!-- panels -->
+        <rect x="10" y="10" width="470" height="430" rx="8" class="p-ingest"/>
+        <rect x="490" y="10" width="500" height="430" rx="8" class="p-answer"/>
+        <text x="245" y="38" class="t-panel" text-anchor="middle">นำเข้า · chunk พร้อม context</text>
+        <text x="740" y="38" class="t-panel" text-anchor="middle">ค้นหา · หา chunk ที่ตอบคำถามได้จริง</text>
+
+        <!-- ingestion nodes -->
+        <g class="n"><rect x="30" y="95" width="85" height="75" rx="5"/>
+          <text x="72" y="128" text-anchor="middle" class="t-b">ไฟล์ .md × 4</text>
+          <text x="72" y="146" text-anchor="middle" class="t-s">MedThai</text></g>
+        <g class="n"><rect x="140" y="95" width="90" height="75" rx="5"/>
+          <text x="185" y="128" text-anchor="middle" class="t-b">53 chunks</text>
+          <text x="185" y="146" text-anchor="middle" class="t-s">ตัดตามหัวข้อ</text></g>
+        <g class="n llm"><rect x="255" y="95" width="135" height="75" rx="5"/>
+          <text x="322" y="122" text-anchor="middle" class="t-b">Qwen (LLM)</text>
+          <text x="322" y="140" text-anchor="middle" class="t-s">เขียน context สั้น ๆ</text>
+          <text x="322" y="155" text-anchor="middle" class="t-s">ให้ทุก chunk</text></g>
+        <g class="n"><rect x="140" y="205" width="250" height="45" rx="5"/>
+          <text x="265" y="233" text-anchor="middle" class="t-b">Context + Chunk  × 53</text></g>
+        <g class="n"><rect x="170" y="290" width="110" height="55" rx="5"/>
+          <text x="225" y="314" text-anchor="middle" class="t-b">Embedding</text>
+          <text x="225" y="331" text-anchor="middle" class="t-s">bge-m3 · 1024 มิติ</text></g>
+        <g class="n"><rect x="305" y="285" width="160" height="50" rx="5"/>
+          <text x="385" y="306" text-anchor="middle" class="t-b">ตู้ Vector</text>
+          <text x="385" y="323" text-anchor="middle" class="t-s">OpenSearch k-NN</text></g>
+        <g class="n before-only bad"><rect x="305" y="360" width="160" height="60" rx="5"/>
+          <text x="385" y="382" text-anchor="middle" class="t-b">ตู้ BM25 (ดัชนีคำ)</text>
+          <text x="385" y="399" text-anchor="middle" class="t-s">ตัดคำแบบ standard</text>
+          <text x="385" y="413" text-anchor="middle" class="t-s t-bad">ประโยคไทย = 1 คำ</text></g>
+        <g class="n after-only good"><rect x="305" y="360" width="160" height="60" rx="5"/>
+          <text x="385" y="382" text-anchor="middle" class="t-b">ตู้ BM25 (ดัชนีคำ)</text>
+          <text x="385" y="399" text-anchor="middle" class="t-s t-good">ตัดคำแบบ thai</text>
+          <text x="385" y="413" text-anchor="middle" class="t-s">อาการ | หัดเยอรมัน</text></g>
+
+        <!-- ingestion arrows -->
+        <path d="M115,132 H138" class="e" marker-end="url(#ah-after)"/>
+        <path d="M230,132 H253" class="e" marker-end="url(#ah-after)"/>
+        <path d="M322,170 V203" class="e" marker-end="url(#ah-after)"/>
+        <path d="M185,170 V203" class="e" marker-end="url(#ah-after)"/>
+        <path d="M225,250 V288" class="e" marker-end="url(#ah-after)"/>
+        <path d="M280,315 H303" class="e" marker-end="url(#ah-after)"/>
+        <path d="M155,250 V390 H303" class="e" marker-end="url(#ah-after)"/>
+        <text x="160" y="384" class="t-s">ข้อความ</text>
+
+        <!-- retrieval nodes -->
+        <g class="n user"><rect x="895" y="70" width="80" height="50" rx="25"/>
+          <text x="935" y="100" text-anchor="middle" class="t-b">คำถาม</text></g>
+        <g class="n"><rect x="515" y="285" width="100" height="45" rx="5"/>
+          <text x="565" y="305" text-anchor="middle" class="t-b">ค้นความหมาย</text>
+          <text x="565" y="321" text-anchor="middle" class="t-s">10 อันดับ</text></g>
+        <g class="n before-only bad"><rect x="515" y="365" width="100" height="45" rx="5"/>
+          <text x="565" y="385" text-anchor="middle" class="t-b">ค้นคำ BM25</text>
+          <text x="565" y="401" text-anchor="middle" class="t-s t-bad">ไม่เจอเลย 35/44</text></g>
+        <g class="n after-only good"><rect x="515" y="365" width="100" height="45" rx="5"/>
+          <text x="565" y="385" text-anchor="middle" class="t-b">ค้นคำ BM25</text>
+          <text x="565" y="401" text-anchor="middle" class="t-s t-good">ใช้ได้ 44/44</text></g>
+        <g class="n"><rect x="640" y="315" width="85" height="60" rx="5"/>
+          <text x="682" y="340" text-anchor="middle" class="t-b">รวมอันดับ</text>
+          <text x="682" y="357" text-anchor="middle" class="t-s">RRF</text></g>
+        <g class="n after-only good"><rect x="748" y="290" width="122" height="110" rx="5"/>
+          <text x="809" y="315" text-anchor="middle" class="t-b">Reranker</text>
+          <text x="809" y="333" text-anchor="middle" class="t-s">bge-reranker-v2-m3</text>
+          <text x="809" y="351" text-anchor="middle" class="t-s">อ่านคำถาม + หน้าต่าง</text>
+          <text x="809" y="366" text-anchor="middle" class="t-s">ละ 500 ตัวอักษร</text>
+          <text x="809" y="384" text-anchor="middle" class="t-s t-good">หน้าต่างดีสุด = คะแนน</text></g>
+        <g class="n llm"><rect x="890" y="310" width="90" height="70" rx="5"/>
+          <text x="935" y="337" text-anchor="middle" class="t-b">LLM ตอบ</text>
+          <text x="935" y="353" text-anchor="middle" class="t-s">Qwen</text>
+          <text x="935" y="368" text-anchor="middle" class="t-s">ตัวเดิม</text></g>
+
+        <!-- retrieval arrows -->
+        <path d="M895,95 H500 V377 H513" class="e dash" marker-end="url(#ah-after)"/>
+        <path d="M500,297 H513" class="e dash" marker-end="url(#ah-after)"/>
+        <text x="700" y="88" text-anchor="middle" class="t-s">คำถามค้นทั้งสองทาง</text>
+        <path d="M465,318 H513" class="e" marker-end="url(#ah-after)"/>
+        <path d="M465,398 H513" class="e" marker-end="url(#ah-after)"/>
+        <path d="M615,307 H630 V335 H638" class="e" marker-end="url(#ah-after)"/>
+        <path d="M615,387 H630 V355 H638" class="e" marker-end="url(#ah-after)"/>
+        <g class="before-only">
+          <path d="M725,345 H888" class="e" marker-end="url(#ah-after)"/>
+          <text x="806" y="337" text-anchor="middle" class="t-s">5 อันดับ</text>
+        </g>
+        <g class="after-only">
+          <path d="M725,345 H746" class="e" marker-end="url(#ah-after)"/>
+          <text x="737" y="410" text-anchor="middle" class="t-s">ผู้สมัคร 10</text>
+          <path d="M870,345 H888" class="e" marker-end="url(#ah-after)"/>
+          <text x="880" y="410" text-anchor="middle" class="t-s">5 อันดับ</text>
+        </g>
+        <path d="M935,310 V122" class="e" marker-end="url(#ah-after)"/>
+        <text x="943" y="220" class="t-s">คำตอบ</text>
+
+        <!-- fix badges -->
+        <g class="after-only badge"><circle cx="455" cy="362" r="12"/><text x="455" y="367" text-anchor="middle">A</text></g>
+        <g class="after-only badge"><circle cx="860" cy="292" r="12"/><text x="860" y="297" text-anchor="middle">B</text></g>
+        <g class="before-only badge-bad"><circle cx="455" cy="362" r="12"/><text x="455" y="367" text-anchor="middle">!</text></g>
+      </svg>

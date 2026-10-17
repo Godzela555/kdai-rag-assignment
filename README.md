@@ -9,7 +9,8 @@
 | (2) ระบบที่ปรับปรุง | `improved_ingest.py` (Thai BM25), `improved_search.py` (Reranker แบบ MaxP) |
 | (3) ความแตกต่างและผลการวัด | README นี้ + `eval/` (ชุดคำถาม, สคริปต์วัดผล, ผลรายคำถาม) |
 | คำตอบจริงของ 5 คำถามอาจารย์ | `authentic_rag_search_results.json` (1) เทียบกับ `improved_rag_search_results.json` (2) |
-| หน้าเว็บถาม-ตอบ (ทางเลือก ไม่อยู่ในข้อ 2) | `app.py` — `streamlit run app.py` สลับระบบ (1)/(2) เทียบกันได้สด ๆ |
+| หน้าเว็บถาม-ตอบสำหรับผู้ใช้ | `app.py` — `streamlit run app.py` แล้วเปิด http://localhost:8501 พิมพ์คำถาม เลือกระบบ (1)/(2) ได้คำตอบพร้อม chunk ที่ใช้เป็นหลักฐาน |
+| แผนภาพ flow | `docs/flow-before.svg`, `docs/flow-after.svg` |
 
 **สรุปสั้น ๆ:** ระบบเดิมเป็น "hybrid search" แค่ในชื่อ เพราะ BM25 ตัดคำภาษาไทยไม่ได้ จึงหาไม่เจอเลยในคำถามภาษาไทยส่วนใหญ่ ระบบใหม่ (A) ทำให้ BM25 อ่านภาษาไทยออก และ (B) เพิ่ม reranker ที่อ่านคำถามคู่กับเนื้อหาจริงก่อนส่งให้ LLM โดยไม่เปลี่ยน LLM ที่ใช้ตอบ
 
@@ -17,20 +18,7 @@
 
 ## ระบบเดิม (1) ทำงานอย่างไร
 
-```
-เอกสาร .md (4 บทความสุขภาพจาก MedThai)
-   │  MarkdownNodeParser แบ่งตามหัวข้อ → 53 chunks
-   │  LLM เขียน "context" สั้น ๆ ให้แต่ละ chunk (Anthropic Contextual Retrieval)
-   ▼
-┌──────────────────────────┐   ┌──────────────────────────┐
-│ BM25 index               │   │ Vector index             │
-│ standard analyzer        │   │ bge-m3 (1024 มิติ)        │
-└────────────┬─────────────┘   └────────────┬─────────────┘
-             └──────── RRF รวมอันดับ ────────┘
-                          │ top 5 chunks
-                          ▼
-                    LLM สร้างคำตอบ
-```
+![flow ระบบเดิม (1)](docs/flow-before.svg)
 
 ## ปัญหาที่พบในระบบเดิม
 
@@ -53,20 +41,9 @@ RRF ให้คะแนนจาก "ลำดับ" ของแต่ละ
 
 ## ระบบที่ปรับปรุง (2)
 
-```
-คำถาม
-  ├─► BM25 (thai analyzer)  ──► 10 อันดับ ─┐
-  └─► Vector (bge-m3)       ──► 10 อันดับ ─┴─► RRF ─► ผู้สมัคร 10 chunks
-                                                         │
-                       แบ่งแต่ละ chunk เป็นหน้าต่าง ~500 ตัวอักษร
-                                                         │
-                 Cross-encoder (bge-reranker-v2-m3) ให้คะแนน (คำถาม, หน้าต่าง)
-                       คะแนน chunk = คะแนนหน้าต่างที่ดีที่สุด (MaxP)
-                                                         │
-                                                  top 5 chunks
-                                                         ▼
-                                       LLM ตัวเดิม สร้างคำตอบ
-```
+![flow ระบบใหม่ (2)](docs/flow-after.svg)
+
+จุดที่เปลี่ยนมีแค่ 2 จุด: **A** ตู้ BM25 ตัดคำแบบ thai และ **B** เพิ่ม reranker ระหว่าง RRF กับ LLM ส่วนอื่น (chunk, embedding, LLM) เหมือนเดิมทุกอย่าง
 
 ### (A) Search algorithm: Thai BM25 — `improved_ingest.py`
 
