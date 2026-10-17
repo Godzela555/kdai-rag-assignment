@@ -11,6 +11,8 @@
 | คำตอบจริงของ 5 คำถามอาจารย์ | `authentic_rag_search_results.json` (1) เทียบกับ `improved_rag_search_results.json` (2) |
 | หน้าเว็บถาม-ตอบสำหรับผู้ใช้ | `app.py` — `streamlit run app.py` แล้วเปิด http://localhost:8501 พิมพ์คำถาม เลือกระบบ (1)/(2) ได้คำตอบพร้อม chunk ที่ใช้เป็นหลักฐาน |
 | แผนภาพ flow | `docs/flow-before.svg`, `docs/flow-after.svg` |
+| ดูอันดับทีละขั้น (BM25 → vector → RRF → reranker) | `compare_ranking.py` — `python compare_ranking.py "อาการของหัดเยอรมัน"` ไม่เรียก LLM |
+| Dashboard ผลการวัด | `eval/dashboard.py` — ส่งผลวัดเข้า OpenSearch Dashboards (http://localhost:5601) เป็นกราฟ Hit/Recall/MRR |
 
 **สรุปสั้น ๆ:** ระบบเดิมเป็น "hybrid search" แค่ในชื่อ เพราะ BM25 ตัดคำภาษาไทยไม่ได้ จึงหาไม่เจอเลยในคำถามภาษาไทยส่วนใหญ่ ระบบใหม่ (A) ทำให้ BM25 อ่านภาษาไทยออก และ (B) เพิ่ม reranker ที่อ่านคำถามคู่กับเนื้อหาจริงก่อนส่งให้ LLM โดยไม่เปลี่ยน LLM ที่ใช้ตอบ
 
@@ -150,7 +152,12 @@ python improved_ingest.py              # สร้าง Thai BM25 index จา�
 python improved_search.py              # ถาม 5 คำถามเดิม → improved_rag_search_results.json
 
 # (3) วัดผลเปรียบเทียบ
-python eval/evaluate.py                # → eval/eval_results.md
+python eval/evaluate.py                # → eval/eval_results.md (เพิ่ม --rescore เพื่อคิดคะแนนใหม่จากผลเดิม)
+
+# ทางเลือก
+streamlit run app.py                   # หน้าเว็บถาม-ตอบ → http://localhost:8501
+python compare_ranking.py "คำถาม"      # ดูอันดับทีละขั้นของทั้งสองระบบ
+python eval/dashboard.py               # กราฟผลวัดใน OpenSearch Dashboards → http://localhost:5601
 ```
 
 ## สิ่งที่แก้จากโค้ดของอาจารย์ (นอกเหนือข้อ 2)

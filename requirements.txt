@@ -9,4 +9,4 @@ tqdm==4.70.1
 langchain==0.1.6
 langchain-community==0.0.19
 langchain-core==0.1.23
-streamlit==1.65.0   # หน้าเว็บ app.py (ทางเลือก)
+streamlit==1.65.0   # หน้าเว็บถาม-ตอบ app.py
